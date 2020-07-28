@@ -28,7 +28,7 @@ const Login = ({ login, isAuthenticated }) => {
 	}
 
 	return (
-		<div>
+		<div className="login">
 			<h1>Sign in</h1>
 			<p>Connect with an existing account</p>
 
@@ -50,10 +50,11 @@ const Login = ({ login, isAuthenticated }) => {
 					minLength="6"
 				/>
 
-				<input
+				<button
 					type="submit"
 					value="Login"
-				/>
+					className="button"
+				> Login </button>
 
 			</form>
 

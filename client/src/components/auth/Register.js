@@ -35,7 +35,7 @@ const Register = ({ register, isAuthenticated }) => {
 	}
 
 	return (
-		<div>
+		<div className="register">
 			<h1>Sign Up</h1>
 			<p>Create a new account</p>
 
@@ -72,10 +72,11 @@ const Register = ({ register, isAuthenticated }) => {
 					onChange={e => onChange(e)}
 				/>
 
-				<input
+				<button
 					type="submit"
 					value="Register"
-				/>
+					className="button"
+				>Register </button>
 			</form>
 
 			<p> Have an account? <Link to="/login">Sign In</Link></p>

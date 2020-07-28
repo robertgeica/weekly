@@ -1,0 +1,29 @@
+.register, .login {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
+    
+    text-align: center;
+    form {
+        display: flex;
+        flex-direction: column;
+        // border: 1px solid red;
+        margin: auto;
+        justify-content: space-between;
+        justify-content: center;
+        
+        input {
+            width: 15em;
+            height: 2em;
+            margin: .5em;
+
+        }
+    }
+}
+
+.button {
+    width: auto ;
+    height: 2em;
+    margin: auto;
+}

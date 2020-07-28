@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-/** To Add: Homepage */
 import Navbar from './components/layout/Navbar';
 import Homepage from './components/layout/Homepage';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+
 import './app.scss';
 
 // Redux

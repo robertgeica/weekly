@@ -3,6 +3,9 @@ $bg: lightblue;
 
 
 @import './components/layout/navbar.scss';
+@import './components/layout/homepage.scss';
+@import './components/auth/auth.scss';
+
 
 body {
     margin: 0;
