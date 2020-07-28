@@ -5,6 +5,7 @@ import Navbar from './components/layout/Navbar';
 import Homepage from './components/layout/Homepage';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Weeks from './components/weeks/Weeks';
 
 import './app.scss';
 
@@ -35,7 +36,7 @@ const App = () => {
         <Switch>
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
-
+          <Route exact path="/weeks" component={Weeks} />
         </Switch>
       </Router>
     </Provider>
