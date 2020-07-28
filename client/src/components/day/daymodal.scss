@@ -1,0 +1,84 @@
+
+/* DayModal.js */
+.ReactModalPortal > div {
+  opacity: 0;
+}
+
+.ReactModalPortal .ReactModal__Overlay {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  transition: opacity 200ms ease-in-out;
+}
+
+.ReactModalPortal .ReactModal__Overlay--after-open {
+  opacity: 1;
+}
+
+.ReactModalPortal .ReactModal__Overlay--before-close {
+  opacity: 0;
+}
+
+.modal {
+  width: 45em;
+  height: 40em;
+  background: #414850;
+  color: white;
+  padding: .5em;
+  margin-bottom: 2em;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 2px solid black;
+  
+} 
+
+
+
+
+
+// smaller than tablet
+@media only screen and (max-width: 768px) {
+.modal {
+    // margin-bottom: 15em;
+    width: 40em;
+//   border: 1px solid red;
+}
+}
+
+// // large phones
+@media only screen and (max-width: 670px) {
+.modal {
+      // margin-bottom: 15em;
+      width: 35em;
+    //   border: 1px solid red;
+  }
+}
+
+// // small phones
+@media only screen and (max-width: 580px) {
+.modal {
+      // margin-bottom: 15em;
+      width: 30em;
+    //   border: 1px solid red;
+  }
+}
+
+// // small phones
+@media only screen and (max-width: 500px) {
+.modal {
+      // margin-bottom: 15em;
+      width: 26em;
+    //   border: 1px solid red;
+  }
+}
+
+// // small phones
+@media only screen and (max-width: 440px) {
+.modal {
+      // margin-bottom: 15em;
+      width: 20em;
+    //   border: 1px solid red;
+  }
+}

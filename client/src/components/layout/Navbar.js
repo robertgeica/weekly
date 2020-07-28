@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
-const Navbar = ({ auth: { isAuthenticated, loading }, logout}) => {
+const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     const userLinks = (
         <div className="links">
-            <Link to="/">link 1</Link>
+            <Link to="/weeks">Weeks</Link>
             <Link to="/">link 2</Link>
             <Link onClick={logout} to="/login">Logout</Link>
         </div>
