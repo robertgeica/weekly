@@ -6,3 +6,14 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGOUT = 'LOGOUT';
+
+// Weeks
+export const DATA_LOADED = 'DATA_LOADED';
+export const DATA_ERROR = 'DATA_ERROR';
+export const ADD_WEEK = 'ADD_WEEK';
+export const DELETE_WEEK = 'DELETE_WEEK';
+
+
+export const TOGGLE_MODAL = 'TOGGLE_MODAL';
+export const CURRENT_WEEK = 'CURRENT_WEEK';
+export const CURRENT_DAY = 'CURRENT_DAY';

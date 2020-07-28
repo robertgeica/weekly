@@ -3,19 +3,18 @@ import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED
 import setAuthToken from '../utils/setAuthToken';
 
 // Load user
-export const loadUser = () => async dispatch => {
-	if(localStorage.token) {
+export const loadUser = () => async (dispatch) => {
+	if (localStorage.token) {
 		setAuthToken(localStorage.token);
 	}
 
 	try {
-		const res = await axios.get('http://localhost:5000/auth');
+		const res = await axios.get('http://localhost:4000/auth');
 
 		dispatch({
 			type: USER_LOADED,
 			payload: res.data
 		});
-
 	} catch (error) {
 		dispatch({
 			type: AUTH_ERROR
@@ -25,7 +24,7 @@ export const loadUser = () => async dispatch => {
 };
 
 // Register uer
-export const register = ({ username, email, password }) => async dispatch => {
+export const register = ({ username, email, password }) => async (dispatch) => {
 	const config = {
 		headers: {
 			'Content-Type': 'application/json'
@@ -34,7 +33,7 @@ export const register = ({ username, email, password }) => async dispatch => {
 	const body = JSON.stringify({ username, email, password });
 
 	try {
-		const res = await axios.post('http://localhost:5000/register', body, config);
+		const res = await axios.post('http://localhost:4000/register', body, config);
 
 		dispatch({
 			type: REGISTER_SUCCESS,
@@ -44,9 +43,7 @@ export const register = ({ username, email, password }) => async dispatch => {
 		dispatch(loadUser());
 		console.log('ok user');
 	} catch (error) {
-		
-
-		if(error) {
+		if (error) {
 			console.log('Error', error);
 		}
 
@@ -54,14 +51,13 @@ export const register = ({ username, email, password }) => async dispatch => {
 			type: REGISTER_FAIL
 		});
 	}
-}
+};
 
-export const login = (email, password) => async dispatch => {
-
+export const login = (email, password) => async (dispatch) => {
 	const body = { email, password };
 
 	try {
-		const res = await axios.post('http://localhost:5000/auth', body);
+		const res = await axios.post('http://localhost:4000/auth', body);
 
 		dispatch({
 			type: LOGIN_SUCCESS,
@@ -69,22 +65,19 @@ export const login = (email, password) => async dispatch => {
 		});
 
 		dispatch(loadUser());
-
 	} catch (error) {
-		const errors = error.response.data.errors;
-
-		if(errors) {
-			console.log('Error', errors);
+		if (error) {
+			console.log('Error', error);
 		}
 
 		dispatch({
 			type: LOGIN_FAIL
 		});
 	}
-}
+};
 
 // Logout
-export const logout = () => dispatch => {
+export const logout = () => (dispatch) => {
 	dispatch({
 		type: LOGOUT
 	});
