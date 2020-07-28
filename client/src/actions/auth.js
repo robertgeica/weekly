@@ -31,11 +31,10 @@ export const register = ({ username, email, password }) => async dispatch => {
 			'Content-Type': 'application/json'
 		}
 	};
-
 	const body = JSON.stringify({ username, email, password });
 
 	try {
-		const res = await axios.post('http://localhost:4000/register', body, config);
+		const res = await axios.post('http://localhost:5000/register', body, config);
 
 		dispatch({
 			type: REGISTER_SUCCESS,
@@ -43,11 +42,12 @@ export const register = ({ username, email, password }) => async dispatch => {
 		});
 
 		dispatch(loadUser());
+		console.log('ok user');
 	} catch (error) {
-		const errors = err.response.data.errors;
+		
 
-		if(errors) {
-			console.log('Error', errors);
+		if(error) {
+			console.log('Error', error);
 		}
 
 		dispatch({
@@ -71,7 +71,7 @@ export const login = (email, password) => async dispatch => {
 		dispatch(loadUser());
 
 	} catch (error) {
-		const errors = err.response.data.errors;
+		const errors = error.response.data.errors;
 
 		if(errors) {
 			console.log('Error', errors);
