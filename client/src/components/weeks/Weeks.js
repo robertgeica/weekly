@@ -1,12 +1,9 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-
-import { connect, Provider } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import store from '../../store/store';
 
 import { loadWeeks, currentWeek, currentDay, handleOpenModal, handleCloseModal } from '../../actions/weeks';
-import { selectDay, toggle } from '../../selectors/week.selectors';
+import { selectDay } from '../../selectors/week.selectors';
 
 import AddWeek from './AddWeek';
 import DayModal from '../day/DayModal';
@@ -17,7 +14,7 @@ const Weeks = ({ state }) => {
 	}, []);
 
 	const completeStatus = (x) => {
-		if (x === 0 || x == undefined) return 'day';
+		if (x === 0 || x === undefined) return 'day';
 		if (x === 1) return 'c25 day';
 		if (x === 2) return 'c50 day';
 		if (x === 3) return 'c75 day';

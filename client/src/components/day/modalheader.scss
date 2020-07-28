@@ -1,0 +1,76 @@
+/* ModalHeader.js */
+.modal-header {
+	margin: 1em;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	// border: 1px solid red;
+
+	.buttons {
+		// border: 1px solid blue;
+		.icon {
+			border: none;
+			background: none;
+			font-size: 30px;
+			outline: none;
+			margin: .2em;
+			color: darken(#fff, 25%);
+
+			&:hover {
+				color: #fff;
+				cursor: pointer;
+			}
+
+			&:active {
+				color: #363b42;
+			}
+
+			svg {
+				max-width: 20px;
+			}
+		}
+	}
+
+	.modal-info {
+		display: flex;
+		flex-direction: row;
+		// border: 1px solid blue;
+		p {
+			color: #fff;
+			margin: auto .5em;
+			font-weight: 500;
+		}
+
+		.updateCH-container {
+			display: flex;
+			flex-direction: column;
+			height: 2em;
+
+			// border: 1px solid red;
+			button {
+				outline: none;
+				border: none;
+				font-weight: 600;
+				border-radius: 5px;
+				text-align: center;
+				margin: .1em 0;
+				background-color: lighten($color:#414850, $amount: 3%);
+				color: #fff;
+				border: 1px solid darken($color:#414850, $amount: 6%);
+
+				&:hover {
+					background-color: lighten($color:#414850, $amount: 10%);
+					cursor: pointer;
+				}
+
+				&:active {
+					background-color: #363b42;
+				}
+
+				&:focus {
+					outline: none;
+				}
+			}
+		}
+	}
+}

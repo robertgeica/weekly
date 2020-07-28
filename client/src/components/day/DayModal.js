@@ -1,10 +1,9 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-import { connect, Provider } from 'react-redux';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { loadWeeks, currentWeek, handleCloseModal } from '../../actions/weeks';
+import { handleCloseModal } from '../../actions/weeks';
 
 import ModalHeader from './ModalHeader';
 
@@ -20,7 +19,7 @@ const DayModal = ({ toggleModal, handleCloseModal }) => {
 			style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
 		>
 			<ModalHeader />
-      
+
 		</Modal>
 	);
 };

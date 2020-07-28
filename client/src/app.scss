@@ -7,6 +7,9 @@ $bg: lightblue;
 @import './components/auth/auth.scss';
 @import './components/weeks/weeks.scss';
 @import './components/day/daymodal.scss';
+@import './components/day/modalheader.scss';
+
+
 body {
     margin: 0;
 }

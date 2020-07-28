@@ -1,41 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { connect, Provider } from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import {
+	loadWeeks,
+	handleCloseModal,
+	handleDeleteWeek,
+	handleUpdateCH
+} from '../../actions/weeks';
+
+import store from '../../store/store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
-import {
-	loadWeeks,
-	currentWeek,
-	currentDay,
-	handleCloseModal,
-	handleDeleteWeek,
-	handleUpdateCH
-} from '../../actions/weeks';
-import { selectWeeks, selectWeek, selectDay, toggle } from '../../selectors/week.selectors';
 
-import store from '../../store/store';
 
 const ModalHeader = ({
 	state,
 	data,
 	day,
-	ch,
+	completedHours,
 	handleDeleteWeek,
 	handleUpdateCH,
 	handleCloseModal,
-	loadDay
 }) => {
 	useEffect(() => {
 		store.dispatch(loadWeeks());
 	}, []);
 
 	const id = data._id;
-
-	const toggleM = toggle();
 
 	return (
 		<div className="modal-header">
@@ -56,7 +51,7 @@ const ModalHeader = ({
 			<div className="modal-info">
 				<p>Day: {day.day}</p>
 				<p>Week: {data.week}</p>
-				<p>CH: {ch}</p>
+				<p>CH: {completedHours}</p>
 				<div className="updateCH-container">
 					<button onClick={(e) => handleUpdateCH(id, e.target.textContent, day)}>+</button>
 					<button onClick={(e) => handleUpdateCH(id, e.target.textContent, day)}>-</button>
@@ -74,7 +69,7 @@ ModalHeader.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-	ch: state.weeks.currentDay.completedHours,
+	completedHours: state.weeks.currentDay.completedHours,
 	data: state.weeks.currentWeek,
 	day: state.weeks.currentDay,
 	state: state.weeks.data
