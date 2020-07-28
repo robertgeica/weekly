@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 
 import { loadWeeks, currentWeek, handleCloseModal } from '../../actions/weeks';
 
+import ModalHeader from './ModalHeader';
+
 const DayModal = ({ toggleModal, handleCloseModal }) => {
 
 	return (
@@ -17,7 +19,8 @@ const DayModal = ({ toggleModal, handleCloseModal }) => {
 			className="modal"
 			style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
 		>
-			<p>modal</p>
+			<ModalHeader />
+      
 		</Modal>
 	);
 };

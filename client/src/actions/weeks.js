@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DATA_LOADED, DATA_ERROR, ADD_WEEK, DELETE_WEEK, CURRENT_WEEK, CURRENT_DAY, TOGGLE_MODAL } from './types';
+import { DATA_LOADED, DATA_ERROR, ADD_WEEK, DELETE_WEEK, CURRENT_WEEK, CURRENT_DAY, TOGGLE_MODAL, UPDATE_CH } from './types';
 
 // Load weeks from database
 export const loadWeeks = () => async (dispatch) => {
@@ -73,29 +73,23 @@ export const handleCloseModal = () => (dispatch) => {
 
 // Add new week
 export const handleAddWeek = () => async (dispatch) => {
-	console.log('add week action dispatched');
-
 	try {
 		const data = await axios.get('http://localhost:4000/weeks');
 		let weekToAdd = 1;
-		const arr = [];
-		console.log(data.data);
+		const existingWeeks = [];
 
 		data.data.map((week) => {
-			console.log('added week', weekToAdd);
-			arr.push(week.week);
+			existingWeeks.push(week.week);
 
-			const [ min, max ] = [ Math.min(...arr), Math.max(...arr) ];
-			const missingWeek = Array.from(Array(max - min), (v, i) => i + min).filter((i) => !arr.includes(i));
-
-			console.log('missing week', missingWeek);
+			const [ min, max ] = [ Math.min(...existingWeeks), Math.max(...existingWeeks) ];
+			const missingWeek = Array.from(Array(max - min), (v, i) => i + min).filter((i) => !existingWeeks.includes(i));
 
 			if (missingWeek.length == 0) {
 				if (data.data.length == 0) {
 					weekToAdd = 1;
 				}
-
 				weekToAdd = data.data.length + 1;
+
 			} else {
 				weekToAdd = missingWeek[0];
 			}
@@ -214,12 +208,78 @@ export const handleAddWeek = () => async (dispatch) => {
 			type: ADD_WEEK,
 			payload: data.data
 		});
-
 		dispatch(loadWeeks());
+
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
 		});
-		console.log('error adding new wk');
+	}
+};
+
+// Delete a week
+export const handleDeleteWeek = (id) => async (dispatch) => {
+	try {
+		const res = await axios.delete('http://localhost:4000/weeks/' + id);
+		console.log(res);
+
+		dispatch({
+			type: DELETE_WEEK,
+			payload: res.data
+		});
+		dispatch(loadWeeks());
+		dispatch(handleCloseModal());
+
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+};
+
+// Update completed hours of a day
+export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
+	try {
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
+		const data = req.data;
+
+		let newCH;
+		const currentDay = day.day % 7 == 0 ? 6 : day.day % 7 - 1;
+
+		// check operator
+		if (operator == '+') {
+			newCH = data.days[currentDay].completedHours + 1;
+		} else if (operator == '-') {
+			newCH = data.days[currentDay].completedHours - 1;
+		} else {
+			console.log('operator error');
+		}
+
+		const newWeek = {
+			week: data.week,
+			weekFocus: {
+				...data.weekFocus
+			},
+			days: [
+				{
+					...data.days[currentDay],
+					day: day.day,
+					completedHours: newCH
+				}
+			]
+		};
+
+		const res = await axios.post('http://localhost:4000/weeks/' + id, newWeek);
+		dispatch({
+			type: UPDATE_CH,
+			payload: [ data ]
+		});
+		dispatch(loadWeeks());
+		dispatch(currentDay(newWeek.days[0]));
+
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
 	}
 };

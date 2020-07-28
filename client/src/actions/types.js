@@ -17,3 +17,5 @@ export const DELETE_WEEK = 'DELETE_WEEK';
 export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const CURRENT_WEEK = 'CURRENT_WEEK';
 export const CURRENT_DAY = 'CURRENT_DAY';
+
+export const UPDATE_CH = 'UPDATE_CH';
