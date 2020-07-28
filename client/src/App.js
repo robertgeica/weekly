@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 /** To Add: Homepage */
 import Navbar from './components/layout/Navbar';
+import Homepage from './components/layout/Homepage';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
-
 import './app.scss';
 
 // Redux
@@ -29,7 +29,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Route exact path="/" component={Navbar} />
+        <Navbar />
+        <Route exact path="/" component={Homepage} />
 
         <Switch>
           <Route exact path="/register" component={Register} />

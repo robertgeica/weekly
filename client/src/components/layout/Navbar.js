@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -8,44 +8,27 @@ import { logout } from '../../actions/auth';
 
 const Navbar = ({ auth: { isAuthenticated, loading }, logout}) => {
     const userLinks = (
-        <ul>
-            <li>
-                <Link to="/">
-                    <span>link 1</span>
-                </Link>
-            </li>
-            <li>
-                <Link to="/">
-                    <span>link 2</span>
-                </Link>
-            </li>
-            <li>
-                <Link onClick={logout} to="/login">
-                    <span>Logout</span>
-                </Link>
-            </li>
-        </ul>
+        <div className="links">
+            <Link to="/">link 1</Link>
+            <Link to="/">link 2</Link>
+            <Link onClick={logout} to="/login">Logout</Link>
+        </div>
     );
 
     const guestLinks = (
-        <ul>
-            <li>
-                <Link to="/register">Register</Link>
-            </li>
-            <li>
-                <Link to="/login">Login</Link>
-            </li>
-
-        </ul>
+        <div className="links">
+            <Link to="/register">Register</Link>
+            <Link to="/login">Login</Link>
+        </div>
     );
 
     return (
-        <nav >
+        <nav className="navbar">
 		
 			<h1>
 				<Link to="/">Weekly</Link>
 			</h1>
-			{!loading && <div>{isAuthenticated ? userLinks : guestLinks}</div>}
+			{!loading && <Fragment>{isAuthenticated ? userLinks : guestLinks}</Fragment>}
 		</nav>
     );
 };

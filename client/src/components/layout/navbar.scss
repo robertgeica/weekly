@@ -1,0 +1,26 @@
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1em;
+    h1 {
+        margin: auto 1em;
+        font-style: italic;
+
+        a {
+            text-decoration: none;
+        }
+
+    }
+
+    .links {
+        margin: auto 1em;
+
+        a {
+            margin: .5em;
+            text-decoration: none;
+        }
+    }
+    background-color: $bg;
+}
