@@ -6,7 +6,7 @@ import WeekFocus from './WeekFocus';
 
 const ModalBody = () => {
   return (
-    <div>
+    <div className="modal-body">
       <DayFocus />
       <DayComments />
       <WeekFocus />

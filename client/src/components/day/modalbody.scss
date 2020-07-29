@@ -13,9 +13,42 @@ th {
 	padding: 8px;
 }
 
+
+
+/* ModalBody */
+.modal-body {
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+
+	span {
+		margin: .5em;
+	}
+
+	&::-webkit-scrollbar {
+		width: .5em;
+	}
+
+	&::-webkit-scrollbar-track {
+		border-radius: 5px;
+		box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 5px;
+		background-color: darkgrey;
+		outline: 1px solid slategrey;
+
+		&:active {
+			background-color: darken(darkgrey, 10%);
+		}
+	}
+}
+
 /* DayFocus, WeekFocus */
 .day-focus,
-.week-focus, .day-comments {
+.week-focus,
+.day-comments {
 	display: flex;
 	flex-direction: column;
 	font-weight: 600;
@@ -26,73 +59,108 @@ th {
 	}
 }
 
+.day-focus {
+	.incomplete {
+		background-color: red;
+	}
+
+	.green {
+		background-color: rgb(11, 168, 11);
+	}
+}
+
 /* Day Comments */
 .day-comments {
-
 	.input {
-    margin-top: 2em;
+		margin-top: 2em;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		background-color: #485058;
-    border-radius: 5px;
-    min-height: 3em;
+		border-radius: 5px;
+		min-height: 3em;
 		height: auto;
 		width: 90%;
-    margin: 0 auto;
+		margin: 0 auto;
 
 		.add-comment {
 			border: none;
 			width: auto;
 			background-color: #485058;
-      border-radius: 5px;
-      width: 95%;
-      color: #fff;
-      outline: none;
-      font-weight: 600;
-	    font-family: 'Quicksand', sans-serif;
+			border-radius: 5px;
+			width: 95%;
+			color: #fff;
+			outline: none;
+			font-weight: 600;
 		}
 
 		.addCommentButton {
-      margin: auto .5em;
-      cursor: pointer;
+			margin: auto .5em;
+			cursor: pointer;
 		}
-  }
-  
-  .comments-container {
-    width: 90%;
-    margin: auto;
+	}
 
-    .comment {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      background-color: lighten($bg-color, 10%);
-      padding: .5em;
-      margin: .5em;
-      border-radius: 5px;
-      font-weight: 500;
-      
-      p {
-        margin: 0 1em;
-      }
+	.comments-container {
+		width: 90%;
+		margin: auto;
 
-      .deletecomment-container {
-        margin: auto 0;
-        cursor: pointer;
-        padding: auto;
+		.comment {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			background-color: lighten($bg-color, 10%);
+			padding: .5em;
+			margin: .5em;
+			border-radius: 5px;
+			font-weight: 500;
 
-        .deleteComment {
-          border: none;
-          outline: none;
-  
-        }
-      }
-    }
-    
-    
-      
-  }
+			p {
+				margin: 0 1em;
+			}
+
+			.deletecomment-container {
+				margin: auto 0;
+				cursor: pointer;
+				padding: auto;
+
+				.deleteComment {
+					border: none;
+					outline: none;
+				}
+			}
+		}
+	}
+}
+
+// EditModal
+.text {
+	padding: 0;
+
+	input {
+		width: 100%;
+		height: 2.5em;
+		outline: none;
+		border: none;
+		margin: 0;
+		padding: 0;
+		background-color: lighten($bg-color, 15%);
+		color: #fff;
+		font-weight: 600;
+		text-align: center;
+		// padding: 8px;
+	}
+}
+
+.button {
+	margin: auto;
+	border: none;
+	outline: none;
+	cursor: pointer;
+  background-color: #485058;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 5px;
+  height: 2.5em;
 }
 
 // Mobile L

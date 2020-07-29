@@ -11,6 +11,7 @@ $daycell-bg: #74b9ff;
 @import './components/day/daymodal.scss';
 @import './components/day/modalheader.scss';
 @import './components/day/modalbody.scss';
+@import './components/day/editmodal.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
@@ -30,40 +31,6 @@ body {
 
 }
 
-
-/* App.js */ 
-.App {
-  display: flex;
-  flex-direction: column;
-  border: 2px solid darken($bg-color, 50%);
-  border-radius: 3px;
-  // border: none;
-  width: 20em;
-  min-width: 705px;
-  margin: auto;
-  margin-top: 8em;
-  color: white;
-
-  .navbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    font-size: 2em;
-    padding: .5em 0;
-    background-color: $main-color;
-  
-    a, svg {
-      color: #fff;
-      cursor: pointer;
-  
-      &:hover {
-        color: $bg-color;
-      }
-  
-      &:active {
-        color: lighten($main-color, 5%);
-      }
-    }
-  }
-
+input {
+  font-family: 'Quicksand', sans-serif;
 }
