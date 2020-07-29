@@ -51,7 +51,7 @@ const ModalHeader = ({
 			<div className="modal-info">
 				<p>Day: {day.day}</p>
 				<p>Week: {data.week}</p>
-				<p>CH: {completedHours}</p>
+				<p>CH: {day.completedHours}</p>
 				<div className="updateCH-container">
 					<button onClick={(e) => handleUpdateCH(id, e.target.textContent, day)}>+</button>
 					<button onClick={(e) => handleUpdateCH(id, e.target.textContent, day)}>-</button>
@@ -64,8 +64,7 @@ const ModalHeader = ({
 ModalHeader.propTypes = {
 	handleDeleteWeek: PropTypes.func.isRequired,
 	handleUpdateCH: PropTypes.func.isRequired,
-	toggleModal: PropTypes.bool,
-	toggleEditModal: PropTypes.bool
+	handleCloseModal: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

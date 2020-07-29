@@ -5,6 +5,7 @@
   border: 1px solid blue;
 	flex: 1 0 14.2857142857%;
   /* flex: 1 0 10%; */
+	justify-content: center;
 }
 
 $dayCellBg: #74b9ff;
@@ -14,8 +15,6 @@ $dayCellBg: #74b9ff;
 .day {
 	display: flex;
 	flex-direction: column;  
-	
-  border: 1px solid green;
 
 }
   
@@ -34,15 +33,14 @@ $dayCellBg: #74b9ff;
 	flex-direction: column;
 	// padding: 14.2857142857%;
 	
-	width: 6.19em;
-	height: 5em;
+	width: 7em;
+	height: 3em;
+	border: 1px solid red;
 }
 
 .dayInfo-container {
   display: flex;
   flex-direction: column;
-	margin: .7em;
-  border: 1px solid black;
 
 }
 

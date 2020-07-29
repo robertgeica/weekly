@@ -10,9 +10,97 @@ $bg: lightblue;
 @import './components/day/modalheader.scss';
 
 
+/* Variables */ 
+// $bgColor: #34495e;
+$bgColor: darken(#414850, 5%);
+// $main-color: #21303f;
+$main-color: lighten(#414850, 5%);
+
+/* Global */
 body {
-    margin: 0;
+  background: $bgColor;
+  margin: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 2em;
+  font-size: .9em;
+}
+  
+th {
+  font-weight: 500;
+}
+
+td, th {
+  border: 1px solid #797979;
+  text-align: center;
+  padding: 8px;
+}		
+
+.button {
+  width: 5em;
+  margin: auto;
+  background-color: lighten($color:#414850, $amount: 3%);
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid black;
+  border-radius: 5px;
+
+  height: 2.8em;
+  
+  &:hover {
+      background-color: lighten($color:#414850, $amount: 10%);
+      cursor: pointer;
+  }
+
+  &:active {
+      background-color: #363B42;
+      outline: none;
+      border: 2px solid black;
+  }
+
+  &:focus {
+      outline: none;
+  }
 }
 
 
+/* App.js */ 
+.App {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid darken($bgColor, 50%);
+  border-radius: 3px;
+  // border: none;
+  width: 20em;
+  min-width: 705px;
+  margin: auto;
+  margin-top: 8em;
+  color: white;
 
+  .navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 2em;
+    padding: .5em 0;
+    background-color: $main-color;
+  
+    a, svg {
+      color: #fff;
+      cursor: pointer;
+  
+      &:hover {
+        color: $bgColor;
+      }
+  
+      &:active {
+        color: lighten($main-color, 5%);
+      }
+    }
+  }
+
+}

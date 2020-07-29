@@ -1,5 +1,16 @@
 import axios from 'axios';
-import { DATA_LOADED, DATA_ERROR, ADD_WEEK, DELETE_WEEK, CURRENT_WEEK, CURRENT_DAY, TOGGLE_MODAL, UPDATE_CH } from './types';
+import {
+	DATA_LOADED,
+	DATA_ERROR,
+	ADD_WEEK,
+	DELETE_WEEK,
+	CURRENT_WEEK,
+	CURRENT_DAY,
+	TOGGLE_MODAL,
+	UPDATE_CH,
+	ADD_COMMENT,
+	DELETE_COMMENT
+} from './types';
 
 // Load weeks from database
 export const loadWeeks = () => async (dispatch) => {
@@ -82,14 +93,15 @@ export const handleAddWeek = () => async (dispatch) => {
 			existingWeeks.push(week.week);
 
 			const [ min, max ] = [ Math.min(...existingWeeks), Math.max(...existingWeeks) ];
-			const missingWeek = Array.from(Array(max - min), (v, i) => i + min).filter((i) => !existingWeeks.includes(i));
+			const missingWeek = Array.from(Array(max - min), (v, i) => i + min).filter(
+				(i) => !existingWeeks.includes(i)
+			);
 
 			if (missingWeek.length == 0) {
 				if (data.data.length == 0) {
 					weekToAdd = 1;
 				}
 				weekToAdd = data.data.length + 1;
-
 			} else {
 				weekToAdd = missingWeek[0];
 			}
@@ -209,7 +221,6 @@ export const handleAddWeek = () => async (dispatch) => {
 			payload: data.data
 		});
 		dispatch(loadWeeks());
-
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -229,7 +240,6 @@ export const handleDeleteWeek = (id) => async (dispatch) => {
 		});
 		dispatch(loadWeeks());
 		dispatch(handleCloseModal());
-
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -276,6 +286,96 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 		});
 		dispatch(loadWeeks());
 		dispatch(currentDay(newWeek.days[0]));
+		
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+};
+
+// Add comment
+export const handleAddComment = (weekId, index, day, comment) => async (dispatch) => {
+	const dataReq = await axios.get('http://localhost:4000/weeks/' + weekId);
+	try {
+		const data = dataReq.data;
+
+		const updatedWeek = {
+			...data,
+			days: [
+				{
+					day: day,
+					completedHours: data.days[index].completedHours,
+					tasks: {
+						h1: data.days[index].tasks.h1,
+						h2: data.days[index].tasks.h2,
+						h3: data.days[index].tasks.h3,
+						h4: data.days[index].tasks.h4,
+						h5: data.days[index].tasks.h5
+					},
+					comments: [ ...data.days[index].comments, comment ]
+				}
+			]
+		};
+
+		const res = await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
+		
+		dispatch({
+			type: ADD_COMMENT,
+			payload: [ data ]
+		});
+
+		dispatch(currentDay(updatedWeek.days[0]));
+		dispatch(loadWeeks());
+
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+};
+
+// Delete comment
+export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (dispatch) => {
+	const dataReq = await axios.get('http://localhost:4000/weeks/' + weekId);
+
+	try {
+
+		const data = dataReq.data;
+		const comments = data.days[dayIndex].comments;
+		const index = comments.indexOf(comment);
+
+		if (index > -1) {
+			comments.splice(index, 1);
+		}
+
+		const updatedWeek = {
+			...data,
+			days: [
+				{
+					day: day,
+					completedHours: data.days[dayIndex].completedHours,
+					tasks: {
+						h1: data.days[dayIndex].tasks.h1,
+						h2: data.days[dayIndex].tasks.h2,
+						h3: data.days[dayIndex].tasks.h3,
+						h4: data.days[dayIndex].tasks.h4,
+						h5: data.days[dayIndex].tasks.h5
+					},
+					comments: [ ...comments ]
+				}
+			]
+		};
+
+		const res = await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
+
+		dispatch({
+			type: DELETE_COMMENT,
+			payload: [ data ]
+		});
+
+		dispatch(currentDay(updatedWeek.days[0]));
+		dispatch(loadWeeks());
 
 	} catch (error) {
 		dispatch({

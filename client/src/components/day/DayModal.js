@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { handleCloseModal } from '../../actions/weeks';
 
 import ModalHeader from './ModalHeader';
+import ModalBody from './ModalBody';
 
 const DayModal = ({ toggleModal, handleCloseModal }) => {
 
@@ -19,6 +20,7 @@ const DayModal = ({ toggleModal, handleCloseModal }) => {
 			style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
 		>
 			<ModalHeader />
+      <ModalBody />
 
 		</Modal>
 	);
