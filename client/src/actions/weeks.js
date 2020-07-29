@@ -7,9 +7,11 @@ import {
 	CURRENT_WEEK,
 	CURRENT_DAY,
 	TOGGLE_MODAL,
+	TOGGLE_EDIT_MODAL,
 	UPDATE_CH,
 	ADD_COMMENT,
-	DELETE_COMMENT
+	DELETE_COMMENT,
+	UPDATE_DAY
 } from './types';
 
 // Load weeks from database
@@ -73,6 +75,33 @@ export const handleCloseModal = () => (dispatch) => {
 	try {
 		dispatch({
 			type: TOGGLE_MODAL,
+			payload: false
+		});
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+};
+
+// toggle edit/body modal
+export const toggleEditModal = () => (dispatch) => {
+	try {
+		dispatch({
+			type: TOGGLE_EDIT_MODAL,
+			payload: true
+		});
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+};
+
+export const toggleBodyModal = () => (dispatch) => {
+	try {
+		dispatch({
+			type: TOGGLE_EDIT_MODAL,
 			payload: false
 		});
 	} catch (error) {
@@ -286,7 +315,7 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 		});
 		dispatch(loadWeeks());
 		dispatch(currentDay(newWeek.days[0]));
-		
+
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -377,6 +406,65 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 		dispatch(currentDay(updatedWeek.days[0]));
 		dispatch(loadWeeks());
 
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+};
+
+
+// Update day tasks
+export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
+	try {
+
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
+		const data = req.data;
+
+		const newWeek = {
+			...data,
+			weekFocus: {
+				learnTask1: week.weekFocus.learnTask1,
+				practiceTask1: week.weekFocus.practiceTask1,
+				learnHoursTask1: week.weekFocus.learnHoursTask1,
+				practiceHoursTask1: week.weekFocus.practiceHoursTask1,
+				learnTask2: week.weekFocus.learnTask2,
+				practiceTask2: week.weekFocus.practiceTask2,
+				learnHoursTask2: week.weekFocus.learnHoursTask2,
+				practiceHoursTask2: week.weekFocus.practiceHoursTask2,
+				learnTask3: week.weekFocus.learnTask3,
+				practiceTask3: week.weekFocus.practiceTask3,
+				learnHoursTask3: week.weekFocus.learnHoursTask3,
+				practiceHoursTask3: week.weekFocus.practiceHoursTask3
+			},
+
+			days: [
+				{
+					day: data.days[index].day,
+					completedHours: data.days[index].completedHours,
+					tasks: {
+						h1: day.tasks.h1,
+						h2: day.tasks.h2,
+						h3: day.tasks.h3,
+						h4: day.tasks.h4,
+						h5: day.tasks.h5
+					},
+					comments: [ ...data.days[index].comments ]
+				}
+			]
+		};
+
+		const res = await axios.post('http://localhost:4000/weeks/' + id, newWeek);
+
+		dispatch({
+			type: UPDATE_DAY,
+			payload: [ data ]
+		});
+
+		dispatch(toggleBodyModal());
+		dispatch(currentDay(day));
+		dispatch(currentWeek(newWeek));
+		dispatch(loadWeeks());
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR

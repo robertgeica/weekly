@@ -6,7 +6,9 @@ import {
 	loadWeeks,
 	handleCloseModal,
 	handleDeleteWeek,
-	handleUpdateCH
+	handleUpdateCH,
+	toggleBodyModal,
+	toggleEditModal
 } from '../../actions/weeks';
 
 import store from '../../store/store';
@@ -15,7 +17,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
-
+import { toggleEditSelector } from '../../selectors/week.selectors';
 
 const ModalHeader = ({
 	state,
@@ -25,12 +27,16 @@ const ModalHeader = ({
 	handleDeleteWeek,
 	handleUpdateCH,
 	handleCloseModal,
+	toggleBodyModal,
+	toggleEditModal
 }) => {
+	
 	useEffect(() => {
 		store.dispatch(loadWeeks());
 	}, []);
 
 	const id = data._id;
+	const toggle = toggleEditSelector();
 
 	return (
 		<div className="modal-header">
@@ -40,7 +46,7 @@ const ModalHeader = ({
 				</button>
 
 				<button className="icon" >
-					<FontAwesomeIcon icon={faPen} />
+					<FontAwesomeIcon icon={faPen} onClick={toggle ? toggleBodyModal : toggleEditModal} />
 				</button>
 
 				<button className="icon" onClick={() => handleDeleteWeek(id)}>
@@ -73,6 +79,5 @@ const mapStateToProps = (state) => ({
 	day: state.weeks.currentDay,
 	state: state.weeks.data
 });
-export default connect(mapStateToProps, { handleDeleteWeek, handleUpdateCH, handleCloseModal })(
-	ModalHeader
-);
+
+export default connect(mapStateToProps, { handleDeleteWeek, handleUpdateCH, handleCloseModal, toggleBodyModal, toggleEditModal })(ModalHeader);
