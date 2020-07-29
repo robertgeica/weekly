@@ -17,7 +17,13 @@ app.use('/register', require('./routes/api/register'));
 app.use('/weeks', require('./routes/api/weeks'));
 
 // Build for heroku
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, 'client', 'build')));
 
+	app.get('*', (req, res) => {
+		res.sendfile(path.join(__dirname, 'client', 'build', 'index.html'));
+	});
+}
 
 
 const PORT = process.env.PORT || 4000;
