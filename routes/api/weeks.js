@@ -8,7 +8,8 @@ const auth = require('../../middleware/auth');
 // @description     Test route
 router.get('/', auth, async (req, res) => {
 	try {
-		const week = await Week.find(req.body);
+		const query = { userId: req.user.id };
+		const week = await Week.find(query);
 		res.json(week);
 	} catch (error) {
 		console.log(error);
@@ -22,8 +23,8 @@ router.post('/', auth, async (req, res) => {
 	try {
 		const user = await User.findById(req.user.id).select('-password');
 
-		console.log('user is', user);
 		let week = await new Week(req.body);
+		week.userId = req.user.id;
 		week.save();
 
 		res.status(200).json({ week: 'Added new week successfully!' });
@@ -37,7 +38,15 @@ router.post('/', auth, async (req, res) => {
 router.delete('/:id', auth, async (req, res) => {
 	try {
 		let id = await req.params.id;
-		const week = await Week.findByIdAndRemove({ _id: id });
+		let userId = req.user.id;
+
+		const week = await Week.findOne({ _id: id, userId });
+
+		if(week.userId !== userId) {
+			console.log('not allowed to delete this week');
+		}
+
+		const weeks = await Week.findByIdAndRemove({_id: id});
 		res.send(week);
 	} catch (error) {
 		res.status(400).send('Error deleting week.');
@@ -50,6 +59,11 @@ router.get('/:id', auth, async (req, res) => {
 	try {
 		let id = await req.params.id;
 		const week = await Week.findById(id);
+
+		if(week.userId !== req.user.id) {
+			console.log('not allowed to delete this week');
+		}
+
 		res.json(week);
 	} catch (error) {
 		res.status(400).send('Error getting the week.');
@@ -61,6 +75,10 @@ router.get('/:id', auth, async (req, res) => {
 router.post('/:id', auth, async (req, res) => {
 	try {
 		let week = await Week.findById(req.params.id);
+
+		if(week.userId !== req.user.id) {
+			console.log('not allowed to delete this week');
+		}
 
 		if (!week) res.status(404).send('No week to update.');
 		// update week focus

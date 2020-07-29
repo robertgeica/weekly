@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let WeekSchema = new Schema({
+	userId: {
+		type: Object,
+		required: true
+	},
 	week: {
 		type: Number
 	},

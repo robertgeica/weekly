@@ -26,9 +26,7 @@ router.get('/', auth, async (req, res) => {
 // @access          Public
 router.post(
 	'/',
-	[ check('email', 'Email must be valid').isEmail(), 
-	  check('password', 'Password is required').exists() 
-	],
+	[ check('email', 'Email must be valid').isEmail(), check('password', 'Password is required').exists() ],
 	async (req, res) => {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
@@ -41,13 +39,13 @@ router.post(
 			// Check if user exists
 			let user = await User.findOne({ email });
 			if (!user) {
-				return res.status(400).json({ errors: [{ msg: 'Invalid credentials'}] });
+				return res.status(400).json({ errors: [ { msg: 'Invalid credentials' } ] });
 			}
 
 			// Match password
 			const isMatch = await bcrypt.compare(password, user.password);
 			if (!isMatch) {
-				return res.status(400).json({ errors: [{ msg: 'Invalid credentials'}] });
+				return res.status(400).json({ errors: [ { msg: 'Invalid credentials' } ] });
 			}
 
 			// Return JWT
@@ -57,14 +55,13 @@ router.post(
 				}
 			};
 
-			jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 3600}, (err, token) => {
+			jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 3600 }, (err, token) => {
 				if (err) throw err;
 				res.json({ token });
 			});
-
 		} catch (error) {
 			console.error(error.message);
-			res.status(500).send('Server error');			
+			res.status(500).send('Server error');
 		}
 	}
 );
