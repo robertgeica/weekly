@@ -1,0 +1,60 @@
+
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: auto;
+  margin-bottom: 2em;
+  font-size: .9em;
+}
+  
+
+td, th {
+  border: 1px solid #797979;
+  text-align: center;
+  padding: 8px;
+}		
+
+/* DayFocus, WeekFocus */
+.day-focus, .week-focus {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+
+  span {
+    margin: .5em 1em;
+    font-weight: 700;
+  }
+}
+
+/* Day Comments */
+
+
+
+// Mobile L
+@media (min-width: 425px) {
+  
+}
+
+// Tablet
+@media (min-width: 768px) {
+  table {
+    margin: auto;
+    margin-bottom: 2em;
+    font-size: .9em;
+  }
+	
+}
+
+// Laptop
+@media (min-width: 1024px) {
+  
+  
+}
+
+// Laptop L
+@media (min-width: 1440px) {
+	
+}
+
+

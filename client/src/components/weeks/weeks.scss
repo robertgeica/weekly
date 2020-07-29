@@ -54,6 +54,7 @@
 	justify-content: center;
 	margin: 0;
 	padding: .1em;
+	width: 2.5em;
 	height: 4em;
 }
 
@@ -71,6 +72,7 @@
 	.cell {
 		width: 3.5em;
 		height: 4em;
+		padding: 0;
 	}
 
 	.span-day, .addWeek button {
@@ -78,11 +80,20 @@
 	}
 }
 
-// Tablet
-@media (min-width: 768px) {
+@media (min-width: 600px) {
 	.cell {
 		width: 5em;
 		height: 4em;
+		padding: 0;
+	}
+
+}
+
+// Tablet
+@media (min-width: 768px) {
+	.cell {
+		width: 6em;
+		height: 5em;
 	}
 }
 
