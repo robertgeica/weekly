@@ -1,60 +1,123 @@
-
-
 table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: auto;
-  margin-bottom: 2em;
-  font-size: .9em;
+	border-collapse: collapse;
+	width: 100%;
+	margin: auto;
+	margin-bottom: 2em;
+	font-size: .9em;
 }
-  
 
-td, th {
-  border: 1px solid #797979;
-  text-align: center;
-  padding: 8px;
-}		
+td,
+th {
+	border: 1px solid #797979;
+	text-align: center;
+	padding: 8px;
+}
 
 /* DayFocus, WeekFocus */
-.day-focus, .week-focus {
-  display: flex;
-  flex-direction: column;
-  font-weight: 600;
+.day-focus,
+.week-focus, .day-comments {
+	display: flex;
+	flex-direction: column;
+	font-weight: 600;
 
-  span {
-    margin: .5em 1em;
-    font-weight: 700;
-  }
+	span {
+		margin: .5em 1em;
+		font-weight: 700;
+	}
 }
 
 /* Day Comments */
+.day-comments {
 
+	.input {
+    margin-top: 2em;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		background-color: #485058;
+    border-radius: 5px;
+    min-height: 3em;
+		height: auto;
+		width: 90%;
+    margin: 0 auto;
 
+		.add-comment {
+			border: none;
+			width: auto;
+			background-color: #485058;
+      border-radius: 5px;
+      width: 95%;
+      color: #fff;
+      outline: none;
+      font-weight: 600;
+	    font-family: 'Quicksand', sans-serif;
+		}
+
+		.addCommentButton {
+      margin: auto .5em;
+      cursor: pointer;
+		}
+  }
+  
+  .comments-container {
+    width: 90%;
+    margin: auto;
+
+    .comment {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: lighten($bg-color, 10%);
+      padding: .5em;
+      margin: .5em;
+      border-radius: 5px;
+      font-weight: 500;
+      
+      p {
+        margin: 0 1em;
+      }
+
+      .deletecomment-container {
+        margin: auto 0;
+        cursor: pointer;
+        padding: auto;
+
+        .deleteComment {
+          border: none;
+          outline: none;
+  
+        }
+      }
+    }
+    
+    
+      
+  }
+}
 
 // Mobile L
 @media (min-width: 425px) {
-  
 }
 
 // Tablet
 @media (min-width: 768px) {
-  table {
-    margin: auto;
-    margin-bottom: 2em;
-    font-size: .9em;
-  }
-	
+	table {
+		margin: auto;
+		margin-bottom: 2em;
+		font-size: .9em;
+		width: 90%;
+	}
+	.day-comments {
+		.input {
+			width: 90%;
+		}
+	}
 }
 
 // Laptop
 @media (min-width: 1024px) {
-  
-  
 }
 
 // Laptop L
 @media (min-width: 1440px) {
-	
 }
-
-

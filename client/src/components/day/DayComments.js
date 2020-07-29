@@ -21,8 +21,10 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment }) => {
 
 	return (
 		<div className="day-comments">
+			<span>Comments</span>
+			
 			<div className="input">
-				<input className="add-comment" type="text" onChange={onChange} placeholder="comment" />
+				<input className="add-comment" type="text" onChange={onChange} placeholder="Add a new comment" />
 
 				<FontAwesomeIcon
 					className="addCommentButton"
@@ -35,19 +37,20 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment }) => {
 				{day.comments.map((c) => (
 					<div key={uuid()} className="comment">
 						<p>{c}</p>
-						<div>
-							<button
+						<div className="deletecomment-container">
+							<FontAwesomeIcon
+								icon={faTrashAlt}
 								className="delete-comment"
 								onClick={(e) =>
 									handleDeleteComment(
 										currentDay,
 										dayId,
-										e.target.parentNode.parentNode.childNodes[0].textContent,
+										e.target.parentNode.parentNode.parentNode.childNodes[0].textContent,
 										data._id
 									)}
 							>
-								x
-							</button>
+								
+							</FontAwesomeIcon>
 						</div>
 					</div>
 				))}
