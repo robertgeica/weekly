@@ -1,83 +1,100 @@
+
   
-/* WeekRow.js */
-.week-row {
-  display: flex;
-  border: 1px solid blue;
-	flex: 1 0 14.2857142857%;
-  /* flex: 1 0 10%; */
-	justify-content: center;
+.weeks-container {
+	margin: 2em auto;
+	color: #fff;
 }
 
-$dayCellBg: #74b9ff;
- 
+.addWeek {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	margin: 1em .5em;
 
-/* DayCell.js */
+	button {
+		border: none;
+		border-radius: 3px;
+		padding: .4em;
+		outline: none;
+		font-weight: 500;
+		color: #fff;
+		background-color: $navbar-bg;
+	}
+	
+}
+
+.week-row {
+  display: flex;
+	flex: 1 0 14.2857142857%;
+	/* flex: 1 0 10%; */
+	justify-content: center;
+	// border: 1px solid red;
+	margin: auto;
+	text-align: center;
+}
+
 .day {
 	display: flex;
 	flex-direction: column;  
-
 }
   
 .day:hover {
   cursor: pointer;
 }
   
-.c25 { background-color: $dayCellBg; }
-.c50 { background-color: darken($dayCellBg, 20%); } 
-.c75 { background-color: darken($dayCellBg, 35%); }
-.c100 { background-color: darken($dayCellBg, 50%); }
-.c101 { background-color: darken($dayCellBg, 60%); }
+.c25 { background-color: $daycell-bg; }
+.c50 { background-color: darken($daycell-bg, 20%); } 
+.c75 { background-color: darken($daycell-bg, 35%); }
+.c100 { background-color: darken($daycell-bg, 50%); }
+.c101 { background-color: darken($daycell-bg, 60%); }
 	
 .cell {
 	display: flex;
 	flex-direction: column;
-	// padding: 14.2857142857%;
-	
-	width: 7em;
-	height: 3em;
-	border: 1px solid red;
+	justify-content: center;
+	margin: 0;
+	padding: .1em;
+	height: 4em;
 }
 
-.dayInfo-container {
+.dayinfo-container {
   display: flex;
   flex-direction: column;
-
 }
 
 .span-day {
   font-size: .8em;
-	font-weight: 500;
+}
+
+// Mobile L
+@media (min-width: 425px) {
+	.cell {
+		width: 3.5em;
+		height: 4em;
+	}
+
+	.span-day, .addWeek button {
+		font-weight: 600;
+	}
+}
+
+// Tablet
+@media (min-width: 768px) {
+	.cell {
+		width: 5em;
+		height: 4em;
+	}
+}
+
+// Laptop
+@media (min-width: 1024px) {
+	.cell {
+		width: 6em;
+		height: 5em;
+	}
+}
+
+// Laptop L
+@media (min-width: 1440px) {
 	
-}
-  
-// smaller than tablet
-@media only screen and (max-width: 768px) {
-	.cell {
-	  width: 4.9em;
-	//   border: 1px solid red;
-	}
-}
-
-// large phones
-@media only screen and (max-width: 600px) {
-	.cell {
-	  width: 4.25em;
-	//   border: 1px solid red;
-	}
-}
-
-// small phones
-@media only screen and (max-width: 520px) {
-	.cell {
-	  width: 3.63em;
-	//   border: 1px solid red;
-	}
-}
-
-// small phones
-@media only screen and (max-width: 440px) {
-	.cell {
-	  width: 2.74em;
-	//   border: 1px solid red;
-	}
 }

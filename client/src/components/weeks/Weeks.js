@@ -26,7 +26,7 @@ const Weeks = ({ state }) => {
 	const crtDay = selectDay();
 
 	return (
-		<div>
+		<div className="weeks-container">
 			<AddWeek />
 			
 			{state.map((week) => {
@@ -46,7 +46,7 @@ const Weeks = ({ state }) => {
 									id={day.day}
 									key={day.day}
 								>
-									<span id={day.day} className="dayInfo-container">
+									<span id={day.day} className="dayinfo-container">
 										<span id={day.day} className="span-day">
 											Day {day.day}
 										</span>

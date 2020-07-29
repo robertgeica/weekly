@@ -1,7 +1,8 @@
 /* Variables */ 
-$bg-color: lighten(#414850, 10%);
-$navbar-bg: darken(#414850, 5%);
+$bg-color: darken(#414850, 5%);
+$navbar-bg: darken(#414850, 10%);
 $main-color: lighten(#414850, 5%);
+$daycell-bg: #74b9ff;
 
 @import './components/layout/navbar.scss';
 @import './components/layout/homepage.scss';
