@@ -1,6 +1,7 @@
-/* Global variables */
-$bg: lightblue;
-
+/* Variables */ 
+$bg-color: lighten(#414850, 10%);
+$navbar-bg: darken(#414850, 5%);
+$main-color: lighten(#414850, 5%);
 
 @import './components/layout/navbar.scss';
 @import './components/layout/homepage.scss';
@@ -9,17 +10,22 @@ $bg: lightblue;
 @import './components/day/daymodal.scss';
 @import './components/day/modalheader.scss';
 
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
 
-/* Variables */ 
-// $bgColor: #34495e;
-$bgColor: darken(#414850, 5%);
-// $main-color: #21303f;
-$main-color: lighten(#414850, 5%);
+
+
+
+
 
 /* Global */
 body {
-  background: lightgrey;
   margin: 0;
+	font-family: 'Quicksand', sans-serif;
+	background-color: $bg-color;
+
+
 }
 
 table {
@@ -40,39 +46,14 @@ td, th {
   padding: 8px;
 }		
 
-.button {
-  width: 5em;
-  margin: auto;
-  background-color: lighten($color:#414850, $amount: 3%);
-  color: #fff;
-  font-weight: 600;
-  border: 1px solid black;
-  border-radius: 5px;
 
-  height: 2.8em;
-  
-  &:hover {
-      background-color: lighten($color:#414850, $amount: 10%);
-      cursor: pointer;
-  }
-
-  &:active {
-      background-color: #363B42;
-      outline: none;
-      border: 2px solid black;
-  }
-
-  &:focus {
-      outline: none;
-  }
-}
 
 
 /* App.js */ 
 .App {
   display: flex;
   flex-direction: column;
-  border: 2px solid darken($bgColor, 50%);
+  border: 2px solid darken($bg-color, 50%);
   border-radius: 3px;
   // border: none;
   width: 20em;
@@ -94,7 +75,7 @@ td, th {
       cursor: pointer;
   
       &:hover {
-        color: $bgColor;
+        color: $bg-color;
       }
   
       &:active {

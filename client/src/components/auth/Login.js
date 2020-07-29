@@ -29,8 +29,8 @@ const Login = ({ login, isAuthenticated }) => {
 
 	return (
 		<div className="login">
-			<h1>Sign in</h1>
-			<p>Connect with an existing account</p>
+			<h1>Connect</h1>
+			<p>Sign in with an existing account</p>
 
 			<form className="form" onSubmit={onSubmit}>
 				<input

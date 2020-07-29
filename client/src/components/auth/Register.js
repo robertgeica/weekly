@@ -36,7 +36,7 @@ const Register = ({ register, isAuthenticated }) => {
 
 	return (
 		<div className="register">
-			<h1>Sign Up</h1>
+			<h1>Let's get connected</h1>
 			<p>Create a new account</p>
 
 			<form className="form" onSubmit={e => onSubmit(e)}>
