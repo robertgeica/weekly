@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 // const connectDB = require('./config/db');
 const path = require('path');
+const mongoose = require('mongoose');
 
 const db = process.env.MONGODB_URI || 'mongodb://localhost/weekly';
 
