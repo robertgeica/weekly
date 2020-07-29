@@ -1,10 +1,17 @@
 
 // homepage -> for connected users
 .homepage {
-    background-color: $bg-color;
 }
 
 // landing -> for guest user
-.langind {
-    background-color: $bg-color;
+.landing {
+}
+
+.homepage, .landing {
+    margin: 2em 0;
+    text-align: center;
+    color: #fff;
+    font-weight: 500;
+
+    
 }
