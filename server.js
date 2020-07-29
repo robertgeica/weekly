@@ -1,10 +1,26 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const connectDB = require('./config/db');
+// const connectDB = require('./config/db');
 const path = require('path');
 
+const db = process.env.MONGODB_URI || 'mongodb://localhost/weekly';
 
+const connectDB = async () => {
+	try {
+		await mongoose.connect(db, {
+			useNewUrlParser: true,
+			useUnifiedTopology: true,
+			useCreateIndex: true,
+			useFindAndModify: false
+		});
+
+		console.log('Database connected ...');
+	} catch (error) {
+		console.log(`Error ${error.message}`);
+		process.exit(1);
+	}
+};
 // Connect database
 connectDB();
 
