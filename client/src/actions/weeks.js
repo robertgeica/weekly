@@ -14,6 +14,7 @@ import {
 	UPDATE_DAY
 } from './types';
 
+import { addWeekAlert, deleteWeekAlert, updateWeekAlert, addCommentAlert, removeCommentAlert } from '../alerts/alerts';
 // Load weeks from database
 export const loadWeeks = () => async (dispatch) => {
 	try {
@@ -250,6 +251,7 @@ export const handleAddWeek = () => async (dispatch) => {
 			payload: data.data
 		});
 		dispatch(loadWeeks());
+		addWeekAlert();
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -261,7 +263,7 @@ export const handleAddWeek = () => async (dispatch) => {
 export const handleDeleteWeek = (id) => async (dispatch) => {
 	try {
 		const res = await axios.delete('/weeks/' + id);
-		console.log(res);
+		// console.log(res);
 
 		dispatch({
 			type: DELETE_WEEK,
@@ -269,6 +271,7 @@ export const handleDeleteWeek = (id) => async (dispatch) => {
 		});
 		dispatch(loadWeeks());
 		dispatch(handleCloseModal());
+		deleteWeekAlert();
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -283,13 +286,13 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 		const data = req.data;
 
 		let newCH;
-		const currentDay = day.day % 7 == 0 ? 6 : day.day % 7 - 1;
+		const crtDay = day.day % 7 == 0 ? 6 : day.day % 7 - 1;
 
 		// check operator
 		if (operator == '+') {
-			newCH = data.days[currentDay].completedHours + 1;
+			newCH = data.days[crtDay].completedHours + 1;
 		} else if (operator == '-') {
-			newCH = data.days[currentDay].completedHours - 1;
+			newCH = data.days[crtDay].completedHours - 1;
 		} else {
 			console.log('operator error');
 		}
@@ -301,7 +304,7 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 			},
 			days: [
 				{
-					...data.days[currentDay],
+					...data.days[crtDay],
 					day: day.day,
 					completedHours: newCH
 				}
@@ -314,12 +317,15 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 			payload: [ data ]
 		});
 		dispatch(loadWeeks());
-		dispatch(currentDay(newWeek.days[0]));
 
+		dispatch(currentDay(newWeek.days[0]));
+		updateWeekAlert();
+		
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
 		});
+		console.log('err ch');
 	}
 };
 
@@ -356,6 +362,7 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 
 		dispatch(currentDay(updatedWeek.days[0]));
 		dispatch(loadWeeks());
+		addCommentAlert();
 
 	} catch (error) {
 		dispatch({
@@ -405,6 +412,7 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 
 		dispatch(currentDay(updatedWeek.days[0]));
 		dispatch(loadWeeks());
+		removeCommentAlert();
 
 	} catch (error) {
 		dispatch({
@@ -465,6 +473,8 @@ export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 		dispatch(currentDay(day));
 		dispatch(currentWeek(newWeek));
 		dispatch(loadWeeks());
+		updateWeekAlert();
+
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERROR, LOGOUT } from './types';
 import setAuthToken from '../utils/setAuthToken';
+import { loginSuccessAlert, loginErrorAlert, registerSuccessAlert, registerErrorAlert } from '../alerts/alerts';
 
 // Load user
 export const loadUser = () => async (dispatch) => {
@@ -19,10 +20,8 @@ export const loadUser = () => async (dispatch) => {
 		dispatch({
 			type: AUTH_ERROR
 		});
-		console.log('Error loading user');
 	}
 };
-
 // Register uer
 export const register = ({ username, email, password }) => async (dispatch) => {
 	const config = {
@@ -41,7 +40,7 @@ export const register = ({ username, email, password }) => async (dispatch) => {
 		});
 
 		dispatch(loadUser());
-		console.log('ok user');
+		registerSuccessAlert();
 	} catch (error) {
 		if (error) {
 			console.log('Error', error);
@@ -50,6 +49,8 @@ export const register = ({ username, email, password }) => async (dispatch) => {
 		dispatch({
 			type: REGISTER_FAIL
 		});
+		registerErrorAlert();
+
 	}
 };
 
@@ -65,6 +66,7 @@ export const login = (email, password) => async (dispatch) => {
 		});
 
 		dispatch(loadUser());
+		loginSuccessAlert();
 	} catch (error) {
 		if (error) {
 			console.log('Error', error);
@@ -73,6 +75,7 @@ export const login = (email, password) => async (dispatch) => {
 		dispatch({
 			type: LOGIN_FAIL
 		});
+		loginErrorAlert();
 	}
 };
 
@@ -82,3 +85,4 @@ export const logout = () => (dispatch) => {
 		type: LOGOUT
 	});
 };
+

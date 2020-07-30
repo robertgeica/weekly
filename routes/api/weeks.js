@@ -121,7 +121,6 @@ router.post('/:id', auth, async (req, res) => {
 		// update comments and date
 		week.days[dayToEdit].comments = req.body.days[0].comments;
 
-		console.log(week);
 		await week.save();
 		res.json('Week Updated successfully.');
 	} catch (error) {
