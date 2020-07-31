@@ -13,8 +13,6 @@ th {
 	padding: 8px;
 }
 
-
-
 /* ModalBody */
 .modal-body {
 	overflow-y: auto;
@@ -69,6 +67,10 @@ th {
 	}
 }
 
+
+.delete {
+	cursor: pointer;
+}
 /* Day Comments */
 .day-comments {
 	.input {
@@ -93,11 +95,10 @@ th {
 			outline: none;
 			font-weight: 600;
 		}
-		
+
 		.addCommentButton {
 			margin: auto .5em;
 			cursor: pointer;
-
 		}
 	}
 
@@ -157,11 +158,11 @@ th {
 	border: none;
 	outline: none;
 	cursor: pointer;
-  background-color: #485058;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 5px;
-  height: 2.5em;
+	background-color: #485058;
+	color: #fff;
+	font-weight: 600;
+	border-radius: 5px;
+	height: 2.5em;
 }
 
 // Mobile L

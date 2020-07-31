@@ -13,7 +13,8 @@ import {
 	DELETE_COMMENT,
 	UPDATE_DAY,
 	ADD_WEEKFOCUS,
-	UPDATE_WEEKFOCUS
+	UPDATE_WEEKFOCUS,
+	DELETE_WEEKFOCUS
 } from './types';
 
 import {
@@ -146,13 +147,7 @@ export const handleAddWeek = () => async (dispatch) => {
 
 		const newWeek = {
 			week: weekToAdd,
-			weekFocus: [
-				{
-					task: '',
-					allocatedHours: '',
-					completedHours: ''
-				}
-			],
+			weekFocus: [],
 
 			days: [
 				{
@@ -472,13 +467,13 @@ export const handleAddWeekFocus = (id, day) => async (dispatch) => {
 
 		const newWeek = {
 			...data,
-			weekFocus: [ 
-				...data.weekFocus, 
+			weekFocus: [
+				...data.weekFocus,
 				{
 					task: '',
 					allocatedHours: '',
 					completedHours: ''
-				} 
+				}
 			]
 		};
 
@@ -490,7 +485,6 @@ export const handleAddWeekFocus = (id, day) => async (dispatch) => {
 		});
 		dispatch(currentWeek(newWeek));
 		dispatch(loadWeeks());
-
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -498,22 +492,18 @@ export const handleAddWeekFocus = (id, day) => async (dispatch) => {
 	}
 };
 
-
-export const handleUpdateWeekFocus = (id, weekFocus) => async dispatch => {
-
+export const handleUpdateWeekFocus = (id, weekFocus) => async (dispatch) => {
 	try {
 		const req = await axios.get('http://localhost:4000/weeks/' + id);
 		const data = req.data;
 
 		const newWeek = {
 			...data,
-			weekFocus: [ 
-				...weekFocus				
-			]
+			weekFocus: [ ...weekFocus ]
 		};
 
 		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
-		
+
 		dispatch({
 			type: UPDATE_WEEKFOCUS,
 			payload: [ data ]
@@ -522,9 +512,40 @@ export const handleUpdateWeekFocus = (id, weekFocus) => async dispatch => {
 		dispatch(currentWeek(newWeek));
 		dispatch(loadWeeks());
 	} catch (error) {
-		
 		dispatch({
 			type: DATA_ERROR
 		});
 	}
-}
+};
+
+export const handleDeleteWeekFocus = (id, task) => async (dispatch) => {
+	try {
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
+		const data = req.data;
+		const weekFocus = data.weekFocus;
+
+		const newWeek = {
+			...data,
+			weekFocus: [ ] 
+		}
+		let findTask = weekFocus.findIndex(x => (x._id === task));
+
+		if(findTask > -1) {weekFocus.splice(findTask, 1)}
+		
+		newWeek.weekFocus = [...weekFocus];
+		
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
+
+		dispatch({
+			type: DELETE_WEEKFOCUS,
+			payload: [ data ]
+		});
+
+		dispatch(currentWeek(newWeek));
+		dispatch(loadWeeks());
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+};
