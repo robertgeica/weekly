@@ -15,7 +15,7 @@ const WeekFocus = ({ data, day, handleAddWeekFocus, handleDeleteWeekFocus }) => 
 	return (
 		<div className="week-focus">
 			<span>Week Focus</span>
-			<button onClick={() => handleAddWeekFocus(data._id, day)}>Add WeekFocus</button>
+			<button onClick={() => handleAddWeekFocus(data._id, day)}>Add Task</button>
 
 			<table>
 				<thead>

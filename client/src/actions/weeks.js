@@ -28,7 +28,7 @@ import {
 // Load weeks from database
 export const loadWeeks = () => async (dispatch) => {
 	try {
-		const res = await axios.get('/weeks');
+		const res = await axios.get('http://localhost:4000/weeks');
 
 		dispatch({
 			type: DATA_LOADED,
@@ -125,7 +125,7 @@ export const toggleBodyModal = () => (dispatch) => {
 // Add new week
 export const handleAddWeek = () => async (dispatch) => {
 	try {
-		const data = await axios.get('/weeks');
+		const data = await axios.get('http://localhost:4000/weeks');
 		let weekToAdd = 1;
 		const existingWeeks = [];
 
@@ -237,7 +237,7 @@ export const handleAddWeek = () => async (dispatch) => {
 			]
 		};
 
-		await axios.post('/weeks', newWeek);
+		await axios.post('http://localhost:4000/weeks', newWeek);
 
 		dispatch({
 			type: ADD_WEEK,
@@ -255,7 +255,7 @@ export const handleAddWeek = () => async (dispatch) => {
 // Delete a week
 export const handleDeleteWeek = (id) => async (dispatch) => {
 	try {
-		const res = await axios.delete('/weeks/' + id);
+		const res = await axios.delete('http://localhost:4000/weeks/' + id);
 		// console.log(res);
 
 		dispatch({
@@ -275,7 +275,7 @@ export const handleDeleteWeek = (id) => async (dispatch) => {
 // Update completed hours of a day
 export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 	try {
-		const req = await axios.get('/weeks/' + id);
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
 		const data = req.data;
 
 		let newCH;
@@ -291,10 +291,7 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 		}
 
 		const newWeek = {
-			week: data.week,
-			weekFocus: {
-				...data.weekFocus
-			},
+			...data,
 			days: [
 				{
 					...data.days[crtDay],
@@ -304,7 +301,7 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 			]
 		};
 
-		await axios.post('/weeks/' + id, newWeek);
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 		dispatch({
 			type: UPDATE_CH,
 			payload: [ data ]
@@ -323,7 +320,7 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 
 // Add comment
 export const handleAddComment = (weekId, index, day, comment) => async (dispatch) => {
-	const dataReq = await axios.get('/weeks/' + weekId);
+	const dataReq = await axios.get('http://localhost:4000/weeks/' + weekId);
 	try {
 		const data = dataReq.data;
 
@@ -350,7 +347,7 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 			return false;
 		}
 
-		await axios.post('/weeks/' + weekId, updatedWeek);
+		await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
 
 		dispatch({
 			type: ADD_COMMENT,
@@ -369,7 +366,7 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 
 // Delete comment
 export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (dispatch) => {
-	const dataReq = await axios.get('/weeks/' + weekId);
+	const dataReq = await axios.get('http://localhost:4000/weeks/' + weekId);
 
 	try {
 		const data = dataReq.data;
@@ -398,7 +395,7 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 			]
 		};
 
-		await axios.post('/weeks/' + weekId, updatedWeek);
+		await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
 
 		dispatch({
 			type: DELETE_COMMENT,
@@ -418,7 +415,7 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 // Update day tasks
 export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 	try {
-		const req = await axios.get('/weeks/' + id);
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
 		const data = req.data;
 
 		const newWeek = {
@@ -441,7 +438,7 @@ export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 			]
 		};
 
-		await axios.post('/weeks/' + id, newWeek);
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 
 		dispatch({
 			type: UPDATE_DAY,
@@ -462,7 +459,7 @@ export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 
 export const handleAddWeekFocus = (id, day) => async (dispatch) => {
 	try {
-		const req = await axios.get('/weeks/' + id);
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
 		const data = req.data;
 
 		const newWeek = {
@@ -477,7 +474,7 @@ export const handleAddWeekFocus = (id, day) => async (dispatch) => {
 			]
 		};
 
-		await axios.post('/weeks/' + id, newWeek);
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 
 		dispatch({
 			type: ADD_WEEKFOCUS,
@@ -494,7 +491,7 @@ export const handleAddWeekFocus = (id, day) => async (dispatch) => {
 
 export const handleUpdateWeekFocus = (id, weekFocus) => async (dispatch) => {
 	try {
-		const req = await axios.get('/weeks/' + id);
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
 		const data = req.data;
 
 		const newWeek = {
@@ -502,7 +499,7 @@ export const handleUpdateWeekFocus = (id, weekFocus) => async (dispatch) => {
 			weekFocus: [ ...weekFocus ]
 		};
 
-		await axios.post('/weeks/' + id, newWeek);
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 
 		dispatch({
 			type: UPDATE_WEEKFOCUS,
@@ -520,7 +517,7 @@ export const handleUpdateWeekFocus = (id, weekFocus) => async (dispatch) => {
 
 export const handleDeleteWeekFocus = (id, task) => async (dispatch) => {
 	try {
-		const req = await axios.get('/weeks/' + id);
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
 		const data = req.data;
 		const weekFocus = data.weekFocus;
 
@@ -534,7 +531,7 @@ export const handleDeleteWeekFocus = (id, task) => async (dispatch) => {
 		
 		newWeek.weekFocus = [...weekFocus];
 		
-		await axios.post('/weeks/' + id, newWeek);
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 
 		dispatch({
 			type: DELETE_WEEKFOCUS,
