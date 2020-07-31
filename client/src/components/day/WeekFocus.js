@@ -1,78 +1,45 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { uuid } from 'uuidv4';
 
-const WeekFocus = ({ data }) => {
+import {handleAddWeekFocus} from '../../actions/weeks';
+
+const WeekFocus = ({ data, handleAddWeekFocus }) => {
 	return (
 		<div className="week-focus">
 			<span>Week Focus</span>
+			<button onClick={() => handleAddWeekFocus(data._id)}>Add WeekFocus</button>
 
 			<table>
 				<thead>
 					<tr>
-						<th>#</th>
 						<th>Task</th>
 						<th>Allocated Hours</th>
 						<th>Completed Hours</th>
-						<th>C/A Hours</th>
 					</tr>
 				</thead>
 
 				<tbody>
-					<tr>
-						<td>Q1</td>
-						<td>{data.weekFocus.learnTask1}</td>
-						<td>{data.weekFocus.learnHoursTask1}</td>
-						<td>{data.weekFocus.practiceTask1}</td>
-						<td>{data.weekFocus.practiceHoursTask1}</td>
-					</tr>
-
-					<tr>
-						<td>Q2</td>
-						<td>{data.weekFocus.learnTask2}</td>
-						<td>{data.weekFocus.learnHoursTask2}</td>
-						<td>{data.weekFocus.practiceTask2}</td>
-						<td>{data.weekFocus.practiceHoursTask2}</td>
-					</tr>
-
-					<tr>
-						<td>Q3</td>
-						<td>{data.weekFocus.learnTask3}</td>
-						<td>{data.weekFocus.learnHoursTask3}</td>
-						<td>{data.weekFocus.practiceTask3}</td>
-						<td>{data.weekFocus.practiceHoursTask3}</td>
-					</tr>
-
-					{data.weekFocus.learnTask4 === undefined ? (
-						false
-					) : (
-						<tr>
-							<td>Q4</td>
-							<td>{data.weekFocus.learnTask4}</td>
-							<td>{data.weekFocus.learnHoursTask4}</td>
-							<td>{data.weekFocus.practiceTask4}</td>
-							<td>{data.weekFocus.practiceHoursTask4}</td>
+					{data.weekFocus.map((task) => (
+						<tr key={uuid()}>
+							<td>{task.task}</td>
+							<td>{task.allocatedHours}</td>
+							<td>{task.completedHours}</td>
 						</tr>
-					)}
-
-					{data.weekFocus.learnTask5 === undefined ? (
-						false
-					) : (
-						<tr>
-							<td>Q5</td>
-							<td>{data.weekFocus.learnTask5}</td>
-							<td>{data.weekFocus.learnHoursTask5}</td>
-							<td>{data.weekFocus.practiceTask5}</td>
-							<td>{data.weekFocus.practiceHoursTask5}</td>
-						</tr>
-					)}
+					))}
 				</tbody>
 			</table>
 		</div>
 	);
 };
 
+WeekFocus.propTypes = {
+	handleAddWeekFocus: PropTypes.func.isRequired,
+}
+
 const mapStateToProps = (state) => ({
 	data: state.weeks.currentWeek
 });
 
-export default connect(mapStateToProps, {})(WeekFocus);
+export default connect(mapStateToProps, { handleAddWeekFocus })(WeekFocus);

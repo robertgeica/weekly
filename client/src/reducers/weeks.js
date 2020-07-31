@@ -1,4 +1,4 @@
-import { DATA_LOADED, DATA_ERROR, ADD_WEEK, DELETE_WEEK, CURRENT_WEEK, CURRENT_DAY, TOGGLE_MODAL, TOGGLE_EDIT_MODAL, UPDATE_CH, UPDATE_DAY, ADD_COMMENT, DELETE_COMMENT } from '../actions/types';
+import { DATA_LOADED, DATA_ERROR, ADD_WEEK, DELETE_WEEK, CURRENT_WEEK, CURRENT_DAY, TOGGLE_MODAL, TOGGLE_EDIT_MODAL, UPDATE_CH, UPDATE_DAY, ADD_COMMENT, DELETE_COMMENT, ADD_WEEKFOCUS, UPDATE_WEEKFOCUS } from '../actions/types';
 
 const initialState = {
     data: [],
@@ -14,6 +14,8 @@ export default function(state = initialState, action) {
 	switch(type) {
 		case DATA_LOADED:
 		case UPDATE_DAY:
+		case UPDATE_WEEKFOCUS:
+		case ADD_WEEKFOCUS:
 			return {...state, data: payload};
 		
 		case DATA_ERROR:

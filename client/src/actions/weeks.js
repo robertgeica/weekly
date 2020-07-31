@@ -11,10 +11,19 @@ import {
 	UPDATE_CH,
 	ADD_COMMENT,
 	DELETE_COMMENT,
-	UPDATE_DAY
+	UPDATE_DAY,
+	ADD_WEEKFOCUS,
+	UPDATE_WEEKFOCUS
 } from './types';
 
-import { addWeekAlert, deleteWeekAlert, updateWeekAlert, addCommentAlert, removeCommentAlert, invalidInputAlert } from '../alerts/alerts';
+import {
+	addWeekAlert,
+	deleteWeekAlert,
+	updateWeekAlert,
+	addCommentAlert,
+	removeCommentAlert,
+	invalidInputAlert
+} from '../alerts/alerts';
 // Load weeks from database
 export const loadWeeks = () => async (dispatch) => {
 	try {
@@ -126,34 +135,24 @@ export const handleAddWeek = () => async (dispatch) => {
 			let missingWeek = [];
 			let count = existingWeeks.length;
 
-			for(let i = 1; i <= count; i++) {
-				if(existingWeeks.indexOf(i) == -1) {
+			for (let i = 1; i <= count; i++) {
+				if (existingWeeks.indexOf(i) == -1) {
 					missingWeek.push(i);
 				}
 			}
 
-			missingWeek.length == 0 ? weekToAdd = data.data.length +1 : weekToAdd = missingWeek[0];
-
+			missingWeek.length == 0 ? (weekToAdd = data.data.length + 1) : (weekToAdd = missingWeek[0]);
 		});
 
 		const newWeek = {
 			week: weekToAdd,
-			weekFocus: {
-				learnTask1: '',
-				practiceTask1: '',
-				learnHoursTask1: '',
-				practiceHoursTask1: '',
-
-				learnTask2: '',
-				practiceTask2: '',
-				learnHoursTask2: '',
-				practiceHoursTask2: '',
-
-				learnTask3: '',
-				practiceTask3: '',
-				learnHoursTask3: '',
-				practiceHoursTask: ''
-			},
+			weekFocus: [
+				{
+					task: '',
+					allocatedHours: '',
+					completedHours: ''
+				}
+			],
 
 			days: [
 				{
@@ -319,7 +318,6 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 
 		dispatch(currentDay(newWeek.days[0]));
 		updateWeekAlert();
-		
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -352,13 +350,13 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 			]
 		};
 
-		if(comment == undefined || comment.length == 0) {
+		if (comment == undefined || comment.length == 0) {
 			invalidInputAlert();
 			return false;
 		}
 
 		await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
-		
+
 		dispatch({
 			type: ADD_COMMENT,
 			payload: [ data ]
@@ -367,7 +365,6 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 		dispatch(currentDay(updatedWeek.days[0]));
 		dispatch(loadWeeks());
 		addCommentAlert();
-
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -380,7 +377,6 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 	const dataReq = await axios.get('http://localhost:4000/weeks/' + weekId);
 
 	try {
-
 		const data = dataReq.data;
 		const comments = data.days[dayIndex].comments;
 		const index = comments.indexOf(comment);
@@ -417,7 +413,6 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 		dispatch(currentDay(updatedWeek.days[0]));
 		dispatch(loadWeeks());
 		removeCommentAlert();
-
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -425,30 +420,15 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 	}
 };
 
-
 // Update day tasks
 export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 	try {
-
 		const req = await axios.get('http://localhost:4000/weeks/' + id);
 		const data = req.data;
 
 		const newWeek = {
 			...data,
-			weekFocus: {
-				learnTask1: week.weekFocus.learnTask1,
-				practiceTask1: week.weekFocus.practiceTask1,
-				learnHoursTask1: week.weekFocus.learnHoursTask1,
-				practiceHoursTask1: week.weekFocus.practiceHoursTask1,
-				learnTask2: week.weekFocus.learnTask2,
-				practiceTask2: week.weekFocus.practiceTask2,
-				learnHoursTask2: week.weekFocus.learnHoursTask2,
-				practiceHoursTask2: week.weekFocus.practiceHoursTask2,
-				learnTask3: week.weekFocus.learnTask3,
-				practiceTask3: week.weekFocus.practiceTask3,
-				learnHoursTask3: week.weekFocus.learnHoursTask3,
-				practiceHoursTask3: week.weekFocus.practiceHoursTask3
-			},
+			weekFocus: [ ...week.weekFocus ],
 
 			days: [
 				{
@@ -478,6 +458,39 @@ export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 		dispatch(currentWeek(newWeek));
 		dispatch(loadWeeks());
 		updateWeekAlert();
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+};
+
+export const handleAddWeekFocus = (id, day) => async (dispatch) => {
+	try {
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
+		const data = req.data;
+
+		const newWeek = {
+			...data,
+			weekFocus: [ 
+				...data.weekFocus, 
+				{
+					task: '',
+					allocatedHours: '',
+					completedHours: ''
+				} 
+			]
+		};
+		console.log(newWeek);
+
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
+
+		dispatch({
+			type: ADD_WEEKFOCUS,
+			payload: [ data ]
+		});
+		dispatch(currentWeek(newWeek));
+		dispatch(loadWeeks());
 
 	} catch (error) {
 		dispatch({
@@ -485,3 +498,38 @@ export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 		});
 	}
 };
+
+
+export const handleUpdateWeekFocus = (id, weekFocus) => async dispatch => {
+
+	try {
+		const req = await axios.get('http://localhost:4000/weeks/' + id);
+		const data = req.data;
+
+		const newWeek = {
+			...data,
+			weekFocus: [ 
+				...weekFocus				
+			]
+		};
+
+		console.log(newWeek);
+		console.log(weekFocus);
+		
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
+		
+		console.log('updated');
+		dispatch({
+			type: UPDATE_WEEKFOCUS,
+			payload: [ data ]
+		});
+
+		dispatch(currentWeek(newWeek));
+		dispatch(loadWeeks());
+	} catch (error) {
+		
+		dispatch({
+			type: DATA_ERROR
+		});
+	}
+}

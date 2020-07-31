@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { uuid } from 'uuidv4';
 
-import { handleUpdateDay } from '../../actions/weeks';
+import { handleUpdateDay, handleUpdateWeekFocus } from '../../actions/weeks';
 
-const EditModal = ({ data, day, handleUpdateDay }) => {
+const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 	const dayId = day.day;
 	const currentDay = dayId % 7 == 0 ? 6 : dayId % 7 - 1;
 
@@ -21,18 +22,45 @@ const EditModal = ({ data, day, handleUpdateDay }) => {
 		console.log(newTasks);
 	};
 
+	// WEEK FOCUS CHANGe
 	// console.log(data);
 	const [ week, setWeek ] = useState({ ...data });
 
+	const [ newWF, setNewWF ] = useState({});
+	// console.log(task);
+
 	const onChangeWeekFocus = (e) => {
 		const { weekFocus } = week;
-		console.log(weekFocus);
+		// console.log(weekFocus);
 
-		const newWeek = { ...weekFocus, [e.target.name]: e.target.value };
+		const taskName = e.target.parentNode.parentNode.childNodes[0].childNodes[0].value;
+		const allocatedHours = e.target.parentNode.parentNode.childNodes[1].childNodes[0].value;
+		const completedHours = e.target.parentNode.parentNode.childNodes[2].childNodes[0].value;
+
+		const newTask = {
+			_id: e.target.id,
+			task: taskName,
+			allocatedHours,
+			completedHours
+		};
+
+		console.log(e.target.id);
+
+		let findTask = weekFocus.findIndex(x => (x._id === e.target.id));
+		console.log(findTask);
+
+		const newWeek = [...weekFocus];
+		// newWeek[findTask] = newTask;
+
+		newWeek[findTask].task = taskName;
+		newWeek[findTask].allocatedHours = allocatedHours;
+		newWeek[findTask].completedHours = completedHours;
+
 		console.log(newWeek);
-		setWeek({ ...week, weekFocus: newWeek });
-	};
+		setNewWF(newWeek);
 
+
+	};
 
 	return (
 		<div className="modal-body">
@@ -72,6 +100,7 @@ const EditModal = ({ data, day, handleUpdateDay }) => {
 					</table>
 				</div>
 			</form>
+
 			<form onChange={onChangeWeekFocus}>
 				<div className="week-focus">
 					<span>Week Focus</span>
@@ -79,111 +108,48 @@ const EditModal = ({ data, day, handleUpdateDay }) => {
 					<table>
 						<thead>
 							<tr>
-								<th>#</th>
-								<th>Task-L</th>
-								<th>C/A Hours</th>
-								<th>Task-P</th>
-								<th>C/A Hours</th>
+								<th>Task</th>
+								<th>Allocated Hours</th>
+								<th>Completed Hours</th>
 							</tr>
 						</thead>
 
 						<tbody>
-							<tr>
-								<td>Q1</td>
-								<td className="text">
-									<input type="text" name="learnTask1" defaultValue={week.weekFocus.learnTask1} />
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										name="learnHoursTask1"
-										defaultValue={week.weekFocus.learnHoursTask1}
-									/>
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										className="hour"
-										name="practiceTask1"
-										defaultValue={week.weekFocus.practiceTask1}
-									/>
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										className="hour"
-										name="practiceHoursTask1"
-										defaultValue={week.weekFocus.practiceHoursTask1}
-									/>
-								</td>
-							</tr>
+							{data.weekFocus.map((task) => (
+								<tr key={task._id}>
+									<td>
+										<input type="text" name="task" id={task._id} defaultValue={task.task} />
+									</td>
 
-							<tr>
-								<td>Q2</td>
-								<td className="text">
-									<input type="text" name="learnTask2" defaultValue={week.weekFocus.learnTask2} />
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										name="learnHoursTask2"
-										defaultValue={week.weekFocus.learnHoursTask2}
-									/>
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										className="hour"
-										name="practiceTask2"
-										defaultValue={week.weekFocus.practiceTask2}
-									/>
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										className="hour"
-										name="practiceHoursTask2"
-										defaultValue={week.weekFocus.practiceHoursTask2}
-									/>
-								</td>
-							</tr>
+									<td>
+										<input
+											type="text"
+											name="allocatedHours"
+											id={task._id}
+											defaultValue={task.allocatedHours}
+										/>
+									</td>
 
-							<tr>
-								<td>Q3</td>
-								<td className="text">
-									<input type="text" name="learnTask3" defaultValue={week.weekFocus.learnTask3} />
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										name="learnHoursTask3"
-										defaultValue={week.weekFocus.learnHoursTask3}
-									/>
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										name="practiceTask3"
-										className="hour"
-										defaultValue={week.weekFocus.practiceTask3}
-									/>
-								</td>
-								<td className="text">
-									<input
-										type="text"
-										name="practiceHoursTask3"
-										className="hour"
-										defaultValue={week.weekFocus.practiceHoursTask3}
-									/>
-								</td>
-							</tr>
+									<td>
+										<input
+											type="text"
+											name="completedHours"
+											id={task._id}
+											defaultValue={task.completedHours}
+										/>
+									</td>
+								</tr>
+							))}
 						</tbody>
 					</table>
 				</div>
 			</form>
 
 			<button
-				onClick={() => handleUpdateDay(data._id, currentDay, dayTasks, week)}
+				onClick={() => {
+					handleUpdateDay(data._id, currentDay, dayTasks, week);
+					handleUpdateWeekFocus(data._id, newWF);
+				}}
 				type="button"
 				className="button"
 			>
@@ -194,11 +160,12 @@ const EditModal = ({ data, day, handleUpdateDay }) => {
 };
 
 EditModal.propTypes = {
-	handleUpdateDay: PropTypes.func.isRequired
+	handleUpdateDay: PropTypes.func.isRequired,
+	handleUpdateWeekFocus: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
 	data: state.weeks.currentWeek,
 	day: state.weeks.currentDay
 });
-export default connect(mapStateToProps, { handleUpdateDay })(EditModal);
+export default connect(mapStateToProps, { handleUpdateDay, handleUpdateWeekFocus })(EditModal);
