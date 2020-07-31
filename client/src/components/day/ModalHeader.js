@@ -55,7 +55,7 @@ const ModalHeader = ({
 			<div className="modal-info">
 				<p>Day: {day.day}</p>
 				<p>Week: {data.week}</p>
-				<p>CH: {day.completedHours}</p>
+				<p><abbr title="Completed Hours">CH:</abbr> {day.completedHours}</p>
 				<div className="updateCH-container">
 					<button onClick={(e) => handleUpdateCH(id, e.target.textContent, day)}>+</button>
 					<button onClick={(e) => handleUpdateCH(id, e.target.textContent, day)}>-</button>

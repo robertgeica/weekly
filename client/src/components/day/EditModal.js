@@ -104,11 +104,11 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 						<tbody>
 							{data.weekFocus.map((task) => (
 								<tr key={task._id}>
-									<td>
+									<td className="text">
 										<input type="text" name="task" id={task._id} defaultValue={task.task} />
 									</td>
 
-									<td>
+									<td className="text">
 										<input
 											type="text"
 											name="allocatedHours"
@@ -117,7 +117,7 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 										/>
 									</td>
 
-									<td>
+									<td className="text">
 										<input
 											type="text"
 											name="completedHours"

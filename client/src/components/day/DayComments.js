@@ -28,7 +28,7 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment }) => {
 
 				<FontAwesomeIcon
 					className="addCommentButton"
-					onClick={() => handleAddComment(data._id, currentDay, dayId, comment[0])}
+					onClick={(e) => {handleAddComment(data._id, currentDay, dayId, comment[0]); e.target.parentNode.childNodes[0].value = ''}}
 					icon={faPaperPlane}
 				/>
 			</div>

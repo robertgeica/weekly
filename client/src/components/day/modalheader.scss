@@ -39,11 +39,16 @@
 			color: #fff;
 			margin: auto .5em;
 			font-weight: 500;
+
+			abbr {
+				text-decoration: none;
+			}
 		}
 
 		.updateCH-container {
 			display: flex;
-			flex-direction: column;
+			margin: auto;
+			flex-direction: row;
 			height: 2em;
 
 			// border: 1px solid red;
@@ -53,10 +58,11 @@
 				font-weight: 600;
 				border-radius: 5px;
 				text-align: center;
-				margin: .1em 0;
+				margin: 0 .2em;
 				background-color: $main-color;
 				color: #fff;
 				border: 1px solid darken($color: $main-color, $amount: 6%);
+				width: 2em;
 
 				&:hover {
 					background-color: lighten($color: $main-color, $amount: 10%);
