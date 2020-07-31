@@ -92,12 +92,10 @@ export const toggleEditModal = () => (dispatch) => {
 			type: TOGGLE_EDIT_MODAL,
 			payload: true
 		});
-		console.log('edit modal');
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
 		});
-		console.log('edit modal err');
 	}
 };
 
@@ -107,12 +105,10 @@ export const toggleBodyModal = () => (dispatch) => {
 			type: TOGGLE_EDIT_MODAL,
 			payload: false
 		});
-		console.log('body modal');
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
 		});
-		console.log('modal body err');
 	}
 };
 

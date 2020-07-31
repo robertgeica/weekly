@@ -9,9 +9,21 @@ import AddWeek from './AddWeek';
 import DayModal from '../day/DayModal';
 
 const Weeks = ({ state }) => {
+
+
 	useEffect(() => {
 		store.dispatch(loadWeeks());
+
+		console.log('sort arr');
 	}, []);
+
+	const sortWeeks = (a, b) => {
+		let compare = 0;
+		if(a.week > b.week) { compare = 1 }
+		else if(a.week < b.week) { compare = -1 }
+		return compare;
+	}
+	state.sort(sortWeeks);
 
 	const completeStatus = (x) => {
 		if (x === 0 || x === undefined) return 'day';
@@ -25,6 +37,8 @@ const Weeks = ({ state }) => {
 
 	const crtDay = selectDay();
 
+	console.log(state);
+	
 	return (
 		<div className="weeks-container">
 			<AddWeek />
