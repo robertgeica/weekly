@@ -5,11 +5,11 @@ import { uuid } from 'uuidv4';
 
 import {handleAddWeekFocus} from '../../actions/weeks';
 
-const WeekFocus = ({ data, handleAddWeekFocus }) => {
+const WeekFocus = ({ data, day, handleAddWeekFocus }) => {
 	return (
 		<div className="week-focus">
 			<span>Week Focus</span>
-			<button onClick={() => handleAddWeekFocus(data._id)}>Add WeekFocus</button>
+			<button onClick={() => handleAddWeekFocus(data._id, day)}>Add WeekFocus</button>
 
 			<table>
 				<thead>
@@ -39,7 +39,9 @@ WeekFocus.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-	data: state.weeks.currentWeek
+	data: state.weeks.currentWeek,
+	day: state.weeks.currentDay
+
 });
 
 export default connect(mapStateToProps, { handleAddWeekFocus })(WeekFocus);

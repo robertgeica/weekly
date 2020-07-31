@@ -481,7 +481,6 @@ export const handleAddWeekFocus = (id, day) => async (dispatch) => {
 				} 
 			]
 		};
-		console.log(newWeek);
 
 		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 
@@ -513,12 +512,8 @@ export const handleUpdateWeekFocus = (id, weekFocus) => async dispatch => {
 			]
 		};
 
-		console.log(newWeek);
-		console.log(weekFocus);
-		
 		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 		
-		console.log('updated');
 		dispatch({
 			type: UPDATE_WEEKFOCUS,
 			payload: [ data ]

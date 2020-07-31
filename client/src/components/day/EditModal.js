@@ -22,12 +22,10 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 		console.log(newTasks);
 	};
 
-	// WEEK FOCUS CHANGe
-	// console.log(data);
+	// WEEK FOCUS
 	const [ week, setWeek ] = useState({ ...data });
 
 	const [ newWF, setNewWF ] = useState({});
-	// console.log(task);
 
 	const onChangeWeekFocus = (e) => {
 		const { weekFocus } = week;
@@ -37,26 +35,15 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 		const allocatedHours = e.target.parentNode.parentNode.childNodes[1].childNodes[0].value;
 		const completedHours = e.target.parentNode.parentNode.childNodes[2].childNodes[0].value;
 
-		const newTask = {
-			_id: e.target.id,
-			task: taskName,
-			allocatedHours,
-			completedHours
-		};
-
-		console.log(e.target.id);
-
 		let findTask = weekFocus.findIndex(x => (x._id === e.target.id));
-		console.log(findTask);
 
 		const newWeek = [...weekFocus];
-		// newWeek[findTask] = newTask;
-
+		
+		if(findTask == -1) {findTask = newWeek.length -1};
 		newWeek[findTask].task = taskName;
 		newWeek[findTask].allocatedHours = allocatedHours;
 		newWeek[findTask].completedHours = completedHours;
 
-		console.log(newWeek);
 		setNewWF(newWeek);
 
 
