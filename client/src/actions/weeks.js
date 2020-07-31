@@ -121,20 +121,19 @@ export const handleAddWeek = () => async (dispatch) => {
 
 		data.data.map((week) => {
 			existingWeeks.push(week.week);
+			existingWeeks.sort();
 
-			const [ min, max ] = [ Math.min(...existingWeeks), Math.max(...existingWeeks) ];
-			const missingWeek = Array.from(Array(max - min), (v, i) => i + min).filter(
-				(i) => !existingWeeks.includes(i)
-			);
+			let missingWeek = [];
+			let count = existingWeeks.length;
 
-			if (missingWeek.length == 0) {
-				if (data.data.length == 0) {
-					weekToAdd = 1;
+			for(let i = 1; i <= count; i++) {
+				if(existingWeeks.indexOf(i) == -1) {
+					missingWeek.push(i);
 				}
-				weekToAdd = data.data.length + 1;
-			} else {
-				weekToAdd = missingWeek[0];
 			}
+
+			missingWeek.length == 0 ? weekToAdd = data.data.length +1 : weekToAdd = missingWeek[0];
+
 		});
 
 		const newWeek = {
