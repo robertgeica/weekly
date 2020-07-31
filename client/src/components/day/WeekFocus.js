@@ -10,9 +10,9 @@ const WeekFocus = ({ data }) => {
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Task-L</th>
-						<th>C/A Hours</th>
-						<th>Task-P</th>
+						<th>Task</th>
+						<th>Allocated Hours</th>
+						<th>Completed Hours</th>
 						<th>C/A Hours</th>
 					</tr>
 				</thead>

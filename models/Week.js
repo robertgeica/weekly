@@ -9,46 +9,19 @@ let WeekSchema = new Schema({
 	week: {
 		type: Number
 	},
-	weekFocus: {
-		learnTask1: {
-			type: String
-		},
-		practiceTask1: {
-			type: String
-		},
-		learnHoursTask1: {
-			type: String
-		},
-		practiceHoursTask1: {
-			type: String
-		},
-		learnTask2: {
-			type: String
-		},
-		practiceTask2: {
-			type: String
-		},
-		learnHoursTask2: {
-			type: String
-		},
-		practiceHoursTask2: {
-			type: String
-		},
-
-		learnTask3: {
-			type: String
-		},
-		practiceTask3: {
-			type: String
-		},
-		learnHoursTask3: {
-			type: String
-		},
-		practiceHoursTask3: {
-			type: String
+	weekFocus: [
+		{
+			task: { 
+				type: String
+			},
+			allocatedHours: { 
+				type: String
+			},
+			completedHours: { 
+				type: String
+			}
 		}
-	},
-
+	],
 	days: [
 		{
 			day: {

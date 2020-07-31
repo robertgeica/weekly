@@ -24,7 +24,7 @@ const App = () => {
   
   useEffect(() => {
     store.dispatch(loadUser());
-    console.log('Loading user.');
+    // console.log('Loading user.');
   }, [])
 
   return (
