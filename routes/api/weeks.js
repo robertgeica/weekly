@@ -82,20 +82,7 @@ router.post('/:id', auth, async (req, res) => {
 
 		if (!week) res.status(404).send('No week to update.');
 		// update week focus
-		week.weekFocus.learnTask1 = req.body.weekFocus.learnTask1;
-		week.weekFocus.practiceTask1 = req.body.weekFocus.practiceTask1;
-		week.weekFocus.learnHoursTask1 = req.body.weekFocus.learnHoursTask1;
-		week.weekFocus.practiceHoursTask1 = req.body.weekFocus.practiceHoursTask1;
-
-		week.weekFocus.learnTask2 = req.body.weekFocus.learnTask2;
-		week.weekFocus.practiceTask2 = req.body.weekFocus.practiceTask2;
-		week.weekFocus.learnHoursTask2 = req.body.weekFocus.learnHoursTask2;
-		week.weekFocus.practiceHoursTask2 = req.body.weekFocus.practiceHoursTask2;
-
-		week.weekFocus.learnTask3 = req.body.weekFocus.learnTask3;
-		week.weekFocus.practiceTask3 = req.body.weekFocus.practiceTask3;
-		week.weekFocus.learnHoursTask3 = req.body.weekFocus.learnHoursTask3;
-		week.weekFocus.practiceHoursTask3 = req.body.weekFocus.practiceHoursTask3;
+		week.weekFocus = req.body.weekFocus;
 
 		// update day tasks
 		const crrDayArr = req.body.days.map((d) => d.day);
@@ -118,7 +105,7 @@ router.post('/:id', auth, async (req, res) => {
 		// update completedhours
 		week.days[dayToEdit].completedHours = req.body.days[0].completedHours;
 
-		// update comments and date
+		// update comments
 		week.days[dayToEdit].comments = req.body.days[0].comments;
 
 		await week.save();
