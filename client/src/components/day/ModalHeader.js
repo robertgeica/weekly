@@ -17,8 +17,6 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 
-import { toggleEditSelector } from '../../selectors/week.selectors';
-
 const ModalHeader = ({
 	state,
 	data,
@@ -28,7 +26,8 @@ const ModalHeader = ({
 	handleUpdateCH,
 	handleCloseModal,
 	toggleBodyModal,
-	toggleEditModal
+	toggleEditModal,
+	toggle
 }) => {
 	
 	useEffect(() => {
@@ -36,7 +35,6 @@ const ModalHeader = ({
 	}, []);
 
 	const id = data._id;
-	const toggle = toggleEditSelector();
 
 	return (
 		<div className="modal-header">
@@ -77,7 +75,8 @@ const mapStateToProps = (state) => ({
 	completedHours: state.weeks.currentDay.completedHours,
 	data: state.weeks.currentWeek,
 	day: state.weeks.currentDay,
-	state: state.weeks.data
+	state: state.weeks.data,
+	toggle: state.weeks.toggleEditModal
 });
 
 export default connect(mapStateToProps, { handleDeleteWeek, handleUpdateCH, handleCloseModal, toggleBodyModal, toggleEditModal })(ModalHeader);

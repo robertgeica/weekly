@@ -6,7 +6,7 @@ import Homepage from './components/layout/Homepage';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Weeks from './components/weeks/Weeks';
-
+import Dashboard from './components/dashboard/Dashboard';
 import './app.scss';
 
 // Redux
@@ -37,6 +37,7 @@ const App = () => {
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/weeks" component={Weeks} />
+          <Route exact path="/dashboard" component={Dashboard} />
         </Switch>
       </Router>
     </Provider>
