@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import store from '../../store/store';
 
@@ -8,13 +9,10 @@ import { selectDay } from '../../selectors/week.selectors';
 import AddWeek from './AddWeek';
 import DayModal from '../day/DayModal';
 
-const Weeks = ({ state }) => {
-
+const Weeks = ({ auth: {isAuthenticated, loading }, state }) => {
 
 	useEffect(() => {
 		store.dispatch(loadWeeks());
-
-		console.log('sort arr');
 	}, []);
 
 	const sortWeeks = (a, b) => {
@@ -34,11 +32,12 @@ const Weeks = ({ state }) => {
 		if (x > 1) return 'c101 day';
 	};
 
-
 	const crtDay = selectDay();
 
-	console.log(state);
-	
+	if(loading == false && isAuthenticated == false) {
+		return <Redirect to="/login" />	
+	}
+
 	return (
 		<div className="weeks-container">
 			<AddWeek />
@@ -83,7 +82,10 @@ const mapStateToProps = (state) => ({
 	currentWeek: state.weeks.currentWeek,
 	currentDay: state.weeks.currentDay,
 	toggleModal: state.weeks.toggleModal,
-	state: state.weeks.data
+	state: state.weeks.data,
+	auth: state.auth
 });
+
+
 
 export default connect(mapStateToProps, { currentWeek, currentDay, handleOpenModal, handleCloseModal })(Weeks);
