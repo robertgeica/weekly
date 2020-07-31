@@ -18,7 +18,19 @@
 		outline: none;
 		font-weight: 500;
 		color: #fff;
-		background-color: $navbar-bg;
+		background-color: $main-color;
+		cursor: pointer;
+		
+		&:hover {
+			background-color: lighten($color: $main-color, $amount: 10%);
+			cursor: pointer;
+		}
+
+		&:active {
+			background-color: #363b42;
+		}
+
+
 	}
 	
 }

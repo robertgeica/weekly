@@ -54,12 +54,12 @@
 				border-radius: 5px;
 				text-align: center;
 				margin: .1em 0;
-				background-color: lighten($color:#414850, $amount: 3%);
+				background-color: $main-color;
 				color: #fff;
-				border: 1px solid darken($color:#414850, $amount: 6%);
+				border: 1px solid darken($color: $main-color, $amount: 6%);
 
 				&:hover {
-					background-color: lighten($color:#414850, $amount: 10%);
+					background-color: lighten($color: $main-color, $amount: 10%);
 					cursor: pointer;
 				}
 
@@ -67,9 +67,7 @@
 					background-color: #363b42;
 				}
 
-				&:focus {
-					outline: none;
-				}
+				
 			}
 		}
 	}

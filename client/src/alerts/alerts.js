@@ -77,3 +77,9 @@ export const registerErrorAlert = () => {
 };
 
 
+export const invalidInputAlert = () => {
+	Alert.fire({
+		icon: 'error',
+		title: 'Invalid input!'
+	});
+};

@@ -14,7 +14,7 @@ import {
 	UPDATE_DAY
 } from './types';
 
-import { addWeekAlert, deleteWeekAlert, updateWeekAlert, addCommentAlert, removeCommentAlert } from '../alerts/alerts';
+import { addWeekAlert, deleteWeekAlert, updateWeekAlert, addCommentAlert, removeCommentAlert, invalidInputAlert } from '../alerts/alerts';
 // Load weeks from database
 export const loadWeeks = () => async (dispatch) => {
 	try {
@@ -243,7 +243,7 @@ export const handleAddWeek = () => async (dispatch) => {
 			]
 		};
 
-		const res = await axios.post('http://localhost:4000/weeks', newWeek);
+		await axios.post('http://localhost:4000/weeks', newWeek);
 
 		dispatch({
 			type: ADD_WEEK,
@@ -310,7 +310,7 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 			]
 		};
 
-		const res = await axios.post('http://localhost:4000/weeks/' + id, newWeek);
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 		dispatch({
 			type: UPDATE_CH,
 			payload: [ data ]
@@ -352,7 +352,13 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 			]
 		};
 
-		const res = await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
+		console.log(comment);
+		if(comment == undefined || comment.length == 0) {
+			invalidInputAlert();
+			return false;
+		}
+
+		await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
 		
 		dispatch({
 			type: ADD_COMMENT,
@@ -402,7 +408,7 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 			]
 		};
 
-		const res = await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
+		await axios.post('http://localhost:4000/weeks/' + weekId, updatedWeek);
 
 		dispatch({
 			type: DELETE_COMMENT,
@@ -461,7 +467,7 @@ export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 			]
 		};
 
-		const res = await axios.post('http://localhost:4000/weeks/' + id, newWeek);
+		await axios.post('http://localhost:4000/weeks/' + id, newWeek);
 
 		dispatch({
 			type: UPDATE_DAY,

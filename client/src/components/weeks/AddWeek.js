@@ -6,8 +6,8 @@ import { handleAddWeek } from '../../actions/weeks';
 
 const AddWeek = ({ handleAddWeek }) => {
 	return (
-		<div onClick={handleAddWeek} className="addWeek">
-			<button>Add new week</button>
+		<div  className="addWeek">
+			<button onClick={handleAddWeek}>Add new week</button>
 		</div>
 	);
 };
