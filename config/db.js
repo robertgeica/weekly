@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const db = process.env.MONGODB_URI || 'mongodb://localhost/weekly';
+const db = process.env.MONGODB_URI || 'mongodb://localhost/wkl';
 
 const connectDB = async () => {
 	try {
