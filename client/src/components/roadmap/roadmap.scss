@@ -1,0 +1,133 @@
+.roadmap {
+	color: #fff;
+
+	h2,
+	h3 {
+		margin: 0;
+	}
+
+	h2 {
+		margin: 0 0 0 .5em;
+	}
+	h3 {
+		margin: 0 0 1em 1em;
+	}
+
+	.roadmap-navbar {
+		// border: 1px solid blue;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+
+		.buttons {
+			span {
+				margin: 0;
+				padding: 0;
+				font-size: 14px;
+			}
+
+			.btn-category {
+				padding: 0 1em 0 0;
+				outline: none;
+				border: none;
+				background-color: $bg-color;
+				color: white;
+				font-weight: 700;
+				font-size: 14px;
+				margin: auto;
+				cursor: pointer;
+			}
+		}
+	}
+
+	.tasks-list {
+		margin: 1em 1em;
+
+		.addtask-button-container {
+			display: flex;
+			justify-content: flex-end;
+
+			.add-task {
+				border: none;
+				border-radius: 3px;
+				padding: .4em;
+				outline: none;
+				font-weight: 700;
+				color: #fff;
+				background-color: #414850;
+				cursor: pointer;
+			}
+		}
+
+		.task {
+			display: flex;
+			flex-direction: row;
+			width: 80%;
+			margin: auto;
+			font-weight: 600;
+			justify-content: space-evenly;
+			// border: 1px solid red;
+
+			.buttons,
+			.task-info {
+				display: flex;
+				flex-direction: column;
+				margin: 2em 0;
+			}
+
+			.task-info {
+				p {
+					margin: 1em 0;
+				}
+
+				.hours {
+					display: flex;
+					flex-direction: row;
+
+					p:nth-child(2) {
+						margin-left: 1em;
+					}
+				}
+			}
+		}
+	}
+}
+
+// add roadmap modal
+.addroadmap-modal, .updatetask-modal {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  background: $main-color;
+  color: white;
+  padding: .5em;
+  outline: none;
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      margin: 1em;
+      border: none;
+      width: 8em;
+      padding: .5em 1em;
+      margin: .5em auto;
+    }
+
+    
+  }
+  button {
+    border: none;
+    border-radius: 3px;
+    padding: .4em;
+    outline: none;
+    font-weight: 700;
+    color: #fff;
+    background-color: #414850;
+    cursor: pointer;
+  }
+} 
+
+// update task modal
