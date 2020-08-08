@@ -10,6 +10,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     const userLinks = (
         <div className="links">
             <Link to="/weeks">Weeks</Link>
+            <Link to="/roadmap">Roadmap</Link>
             <Link to="/dashboard">Dashboard</Link>
             <Link onClick={logout} to="/login">Logout</Link>
         </div>
