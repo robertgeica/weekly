@@ -11,20 +11,20 @@ $daycell-bg: #74b9ff;
 @import './components/day/daymodal.scss';
 @import './components/day/modalheader.scss';
 @import './components/day/modalbody.scss';
+@import './components/roadmap/roadmap.scss';
 
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 // @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
 
 
-
-
-
-
 /* Global */
+
+* {
+	font-family: 'Quicksand', sans-serif;
+}
 body {
   margin: 0;
-	font-family: 'Quicksand', sans-serif;
 	background-color: $bg-color;
 
 
