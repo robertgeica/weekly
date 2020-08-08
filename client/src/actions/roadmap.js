@@ -15,7 +15,7 @@ import {
 // Load roadmaps from database
 export const loadRoadmaps = () => async (dispatch) => {
 	try {
-		const res = await axios.get('http://localhost:4000/roadmap');
+		const res = await axios.get('/roadmap');
 
 		dispatch({
 			type: ROADMAP_LOADED,
@@ -129,7 +129,7 @@ export const handleCloseUpdateModal = () => dispatch => {
 // ADD, DELETE, UPDATE actions
 export const handleAddTask = (task) => async (dispatch) => {
 	try {
-		const tasks = await axios.post('http://localhost:4000/roadmap', task);
+		const tasks = await axios.post('/roadmap', task);
 
 		dispatch({
 			type: ADD_TASK,
@@ -147,7 +147,7 @@ export const handleAddTask = (task) => async (dispatch) => {
 
 export const handleDeleteTask = (id) => async (dispatch) => {
 	try {
-		const res = await axios.delete('http://localhost:4000/roadmap/' + id);
+		const res = await axios.delete('/roadmap/' + id);
 
 		dispatch({
 			type: DELETE_TASK,
@@ -164,12 +164,12 @@ export const handleDeleteTask = (id) => async (dispatch) => {
 
 export const handleUpdateTask = (id, newTask) => async (dispatch) => {
 	// get task to edit
-	const res = await axios.get('http://localhost:4000/roadmap/' + id);
+	const res = await axios.get('/roadmap/' + id);
 	const data = res.data;
 
 	try {
 		// add new task
-		await axios.post('http://localhost:4000/roadmap/' + id, newTask);
+		await axios.post('/roadmap/' + id, newTask);
 
 		dispatch({
 			type: UPDATE_TASK,
