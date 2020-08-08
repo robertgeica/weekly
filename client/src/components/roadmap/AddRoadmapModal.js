@@ -2,8 +2,6 @@ import React, { useEffect, useState, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import Modal from 'react-modal';
 
-import { uuid } from 'uuidv4';
-
 import { connect } from 'react-redux';
 import store from '../../store/store';
 

@@ -12,6 +12,9 @@ import {
 	CURRENT_TASK
 } from './types';
 
+import { addTaskAlert, errorAddTaskAlert, updateTaskAlert, errorUpdateTaskAlert, deleteTaskAlert, errorDeleteTaskAlert } from '../alerts/alerts';
+
+
 // Load roadmaps from database
 export const loadRoadmaps = () => async (dispatch) => {
 	try {
@@ -138,10 +141,12 @@ export const handleAddTask = (task) => async (dispatch) => {
 
 		dispatch(loadRoadmaps());
 		dispatch(handleCloseModal());
+		addTaskAlert();
 	} catch (error) {
 		dispatch({
 			type: ROADMAP_ERROR
 		});
+		errorAddTaskAlert();
 	}
 };
 
@@ -155,10 +160,13 @@ export const handleDeleteTask = (id) => async (dispatch) => {
 		});
 
 		dispatch(loadRoadmaps());
+		deleteTaskAlert();
+
 	} catch (error) {
 		dispatch({
 			type: ROADMAP_ERROR
 		});
+		errorDeleteTaskAlert();
 	}
 };
 
@@ -178,9 +186,11 @@ export const handleUpdateTask = (id, newTask) => async (dispatch) => {
 
 		dispatch(loadRoadmaps());
 		dispatch(handleCloseUpdateModal());
+		updateTaskAlert();
 	} catch (error) {
 		dispatch({
 			type: ROADMAP_ERROR
 		});
+		errorUpdateTaskAlert();
 	}
 };

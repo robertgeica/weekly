@@ -83,3 +83,45 @@ export const invalidInputAlert = () => {
 		title: 'Invalid input!'
 	});
 };
+
+export const addTaskAlert = () => {
+	Alert.fire({
+		icon: 'success',
+		title: 'Added task successfully!'
+	});
+};
+
+export const errorAddTaskAlert = () => {
+	Alert.fire({
+		icon: 'error',
+		title: 'Invalid input!'
+	});
+}
+
+export const updateTaskAlert = () => {
+	Alert.fire({
+		icon: 'success',
+		title: 'Updated task successfully!'
+	});
+};
+
+export const errorUpdateTaskAlert = () => {
+	Alert.fire({
+		icon: 'error',
+		title: 'Invalid input!'
+	});
+}
+
+export const deleteTaskAlert = () => {
+	Alert.fire({
+		icon: 'success',
+		title: 'Deleted task successfully!'
+	});
+};
+
+export const errorDeleteTaskAlert = () => {
+	Alert.fire({
+		icon: 'error',
+		title: 'Invalid input!'
+	});
+}
