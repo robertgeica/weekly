@@ -18,6 +18,7 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 		console.log(tasks);
 
 		const newTasks = { ...tasks, [e.target.name]: e.target.value };
+		console.log(newTasks);
 		setDayTasks({ ...dayTasks, tasks: newTasks });
 		console.log(newTasks);
 	};
@@ -45,7 +46,6 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 		newWeek[findTask].completedHours = completedHours;
 
 		setNewWF(newWeek);
-
 
 	};
 
