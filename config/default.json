@@ -1,3 +1,7 @@
 {
-    "jwtSecret": "jwt-secret-token"
+    "jwtSecret": "jwt-secret-token",
+    "CLIENT_URL": "http://localhost:3000",
+    "JWT_RESET_PASSWORD": "jwt-reset-password"
+
+
 }
