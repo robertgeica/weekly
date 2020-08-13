@@ -43,3 +43,9 @@ export const UPDATE_TASK = 'UPDATE_TASK';
 export const CURRENT_CATEGORY = 'CURRENT_CATEGORY';
 export const CURRENT_TASK = 'CURRENT_TASK';
 export const TASK_ID = 'TASK_ID';
+
+
+// Reset password
+export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
+export const RESET_PASSWORD = 'RESET_PASSWORD';
+export const ERROR_RESET_PASSWORD = 'ERROR_RESET_PASSWORD';

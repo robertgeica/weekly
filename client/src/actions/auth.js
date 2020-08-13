@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERROR, LOGOUT } from './types';
+import { REGISTER_SUCCESS, REGISTER_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, USER_LOADED, AUTH_ERROR, LOGOUT, FORGOT_PASSWORD, ERROR_RESET_PASSWORD, RESET_PASSWORD } from './types';
 import setAuthToken from '../utils/setAuthToken';
 import { loginSuccessAlert, loginErrorAlert, registerSuccessAlert, registerErrorAlert } from '../alerts/alerts';
+
+
 
 // Load user
 export const loadUser = () => async (dispatch) => {
@@ -85,4 +87,46 @@ export const logout = () => (dispatch) => {
 		type: LOGOUT
 	});
 };
+
+// Forgot Password
+export const forgotPassword = (email) => async dispatch => {
+
+	try {
+		const res = await axios.put('auth/forgotpassword', email);
+
+		dispatch({
+			type: FORGOT_PASSWORD,
+			payload: email
+		});
+
+		console.log('email sent to', email);
+
+	} catch (error) {
+		dispatch({
+			type: ERROR_RESET_PASSWORD
+		})
+	}
+}
+
+// Reset Password
+export const resetPassword = ({email, password, token}) => async dispatch => {
+	const formData = {
+		email: email, 
+		newPassword: password, 
+		resetPasswordLink: token
+	};
+
+	try {
+		const res = await axios.put('/auth/resetpassword', formData);
+		
+		dispatch({
+			type: RESET_PASSWORD,
+			payload: formData
+		})
+	} catch (error) {
+		dispatch({
+			type: ERROR_RESET_PASSWORD
+		})
+	}
+}
 
