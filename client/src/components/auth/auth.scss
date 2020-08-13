@@ -1,5 +1,7 @@
 .register,
-.login {
+.login,
+.forgot-password,
+.reset-password {
 	display: flex;
 	flex-direction: column;
 	width: 80%;

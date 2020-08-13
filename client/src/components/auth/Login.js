@@ -58,6 +58,7 @@ const Login = ({ login, isAuthenticated }) => {
 			</form>
 
 			<p>Don't have an account? <Link to="/register">Sign up</Link></p>
+			<p>Forgot password? <Link to="/forgotpassword">Reset</Link></p>
 		</div>
 	);
 };

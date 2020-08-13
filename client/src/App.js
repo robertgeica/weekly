@@ -8,6 +8,8 @@ import Login from './components/auth/Login';
 import Weeks from './components/weeks/Weeks';
 // import Dashboard from './components/dashboard/Dashboard';
 import Roadmap from './components/roadmap/Roadmap';
+import ForgotPassword from './components/auth/ForgotPassword';
+import ResetPassword from './components/auth/ResetPassword';
 
 import './app.scss';
 
@@ -40,6 +42,8 @@ const App = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/weeks" component={Weeks} />
           <Route exact path="/roadmap" component={Roadmap} />
+          <Route exact path="/forgotpassword" component={ForgotPassword} />
+          <Route exact path="/resetpassword/:token" component={ResetPassword} />
           
         </Switch>
       </Router>
