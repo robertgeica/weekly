@@ -7,7 +7,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 
 const User = require('../../models/User');
 
@@ -89,7 +89,7 @@ router.put('/forgotpassword', async (req, res) => {
 			const token = jwt.sign({ _id: user._id }, config.JWT_RESET_PASSWORD, { expiresIn: '10m' });
 
 			const emailData = {
-				from: 'geicarobert@gmail.com',
+				from: 'robert.geica48@gmail.com',
 				to: email,
 				subject: `Reset Password Link`,
 				html: `
@@ -108,6 +108,7 @@ router.put('/forgotpassword', async (req, res) => {
 					sgMail
 						.send(emailData)
 						.then((sent) => {
+							console.log('email sent');
 							return res.json({ message: `Email has been sent to ${email}` });
 						})
 						.catch((err) => {
@@ -126,14 +127,18 @@ router.put('/resetpassword', async (req, res) => {
 	const { resetPasswordLink, newPassword, email } = req.body;
 	const errors = validationResult(req);
 
+	// console.log(req.body);
 	if (!errors.isEmpty()) {
 		console.log(errors);
 		return res.status(422).json({ errors });
 	} else {
+
 		// check if link exists
 		if (resetPasswordLink) {
+			
 			jwt.verify(resetPasswordLink, config.JWT_RESET_PASSWORD, async (err, decoded) => {
 				if (err) {
+					console.log(err);
 					return res.status(400).json({ error: 'expired link' });
 				}
 
@@ -152,7 +157,6 @@ router.put('/resetpassword', async (req, res) => {
 						password: newPassword,
 						resetPasswordLink: ''
 					};
-
 					// encrypt password
 					const salt = await bcrypt.genSalt(10);
 					updateFields.password = await bcrypt.hash(updateFields.password, salt);
