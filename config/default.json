@@ -1,6 +1,6 @@
 {
     "jwtSecret": "jwt-secret-token",
-    "CLIENT_URL": "http://localhost:3000",
+    "CLIENT_URL": "https://weeklly.herokuapp.com",
     "JWT_RESET_PASSWORD": "jwt-reset-password"
 
 
