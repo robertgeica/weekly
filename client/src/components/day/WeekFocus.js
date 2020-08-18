@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 
 import { connect } from 'react-redux';
+import store from '../../store/store';
 import PropTypes from 'prop-types';
 import { uuid } from 'uuidv4';
 
@@ -11,8 +15,14 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { handleAddWeekFocus, handleDeleteWeekFocus } from '../../actions/weeks';
+import { loadRoadmaps } from '../../actions/roadmap';
 
-const WeekFocus = ({ data, day, handleAddWeekFocus, handleDeleteWeekFocus }) => {
+const WeekFocus = ({ data, day, roadmap, handleAddWeekFocus, handleDeleteWeekFocus }) => {
+
+	useEffect(() => {
+		store.dispatch(loadRoadmaps());
+	}, []);
+
 	const [ toggle, setToggle ] = useState(undefined);
 	const [ task, setTask ] = useState({});
 
@@ -24,23 +34,22 @@ const WeekFocus = ({ data, day, handleAddWeekFocus, handleDeleteWeekFocus }) => 
 		setToggle(true);
 	};
 
-	const onChange = e => {
-		const taskName = e.target.parentNode.childNodes[0].value;
-		const allocatedHours = e.target.parentNode.childNodes[1].value;
-		const completedHours = e.target.parentNode.childNodes[2].value;
+	const handleChange = text => e => {
 
-		const newTask = {
-			taskName,
-			allocatedHours,
-			completedHours
-		};
+		console.log(e.target.textContent);
 
-		setTask(newTask);
-	
+		if(text == 'taskName' && e.target.value == 0 || e.target.value == undefined) {
+			setTask({...task, [text]: e.target.textContent});
+		} else {
+			setTask({...task, [text]: e.target.value});
+		}
+			
 	}
 
+	console.log(roadmap);
 	return (
 		<div className="week-focus">
+			
 			<span>Week Focus</span>
 			<Modal
 				isOpen={!!toggle}
@@ -50,10 +59,19 @@ const WeekFocus = ({ data, day, handleAddWeekFocus, handleDeleteWeekFocus }) => 
 				className="addroadmap-modal modal"
 				style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
 			>
-				<form onChange={onChange}>
-					<input type="text" name="name" placeholder="task name" />
-					<input type="text" name="allocatedHours" placeholder="allocated hours" />
-					<input type="text" name="completedHours" placeholder="completed hours" />
+				<form>
+					<Autocomplete
+						freeSolo
+						options={roadmap}
+						getOptionLabel={(option) => option.task.name}
+						onChange={handleChange('taskName')}
+						renderInput={
+							(params) => <TextField {...params} label="Task" onChange={handleChange('taskName')} />
+						}
+					/>
+
+					<input type="text" name="allocatedHours" placeholder="allocated hours" onChange={handleChange('allocatedHours')}  />
+					<input type="text" name="completedHours" placeholder="completed hours" onChange={handleChange('completedHours')}  />
 				</form>
 
 				<button 
@@ -101,12 +119,14 @@ const WeekFocus = ({ data, day, handleAddWeekFocus, handleDeleteWeekFocus }) => 
 
 WeekFocus.propTypes = {
 	handleAddWeekFocus: PropTypes.func.isRequired,
-	handleDeleteWeekFocus: PropTypes.func.isRequired
+	handleDeleteWeekFocus: PropTypes.func.isRequired,
+	loadRoadmaps: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	data: state.weeks.currentWeek,
-	day: state.weeks.currentDay
+	day: state.weeks.currentDay,
+	roadmap: state.roadmap.data
 });
 
-export default connect(mapStateToProps, { handleAddWeekFocus, handleDeleteWeekFocus })(WeekFocus);
+export default connect(mapStateToProps, { handleAddWeekFocus, handleDeleteWeekFocus, loadRoadmaps })(WeekFocus);
