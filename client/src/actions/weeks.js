@@ -457,7 +457,7 @@ export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
 	}
 };
 
-export const handleAddWeekFocus = (id, day) => async (dispatch) => {
+export const handleAddWeekFocus = (id, day, task) => async (dispatch) => {
 	try {
 		const req = await axios.get('/weeks/' + id);
 		const data = req.data;
@@ -467,9 +467,9 @@ export const handleAddWeekFocus = (id, day) => async (dispatch) => {
 			weekFocus: [
 				...data.weekFocus,
 				{
-					task: '',
-					allocatedHours: '',
-					completedHours: ''
+					task: task.taskName,
+					allocatedHours: task.allocatedHours,
+					completedHours: task.completedHours
 				}
 			]
 		};
