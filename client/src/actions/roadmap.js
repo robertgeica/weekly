@@ -12,12 +12,41 @@ import {
 	CURRENT_TASK
 } from './types';
 
-import { addTaskAlert, errorAddTaskAlert, updateTaskAlert, errorUpdateTaskAlert, deleteTaskAlert, errorDeleteTaskAlert } from '../alerts/alerts';
+import {
+	addTaskAlert,
+	errorAddTaskAlert,
+	updateTaskAlert,
+	errorUpdateTaskAlert,
+	deleteTaskAlert,
+	errorDeleteTaskAlert
+} from '../alerts/alerts';
 
+// Update roadmaps hours
+export const updateRoadmaps = () => async (dispatch) => {
+	/*
+		have to get completedHours from weeks.weekFocus array
+		then have to check if any task from roadmap == task from weekFocus
+		if true, update completedHours from roadmap.task 
+			with sum of completeHours from week.weekFocus
+	*/
+	try {
+		const roadmap = await axios.get('/roadmap');
+		const weeks = await axios.get('/weeks');
 
+		// dispatch({
+			// type: ROADMAP_LOADED,
+			// payload: roadmap.data
+		// });
+	} catch (error) {
+		// dispatch({
+			// type: ROADMAP_ERROR
+		// });
+	}
+};
 // Load roadmaps from database
 export const loadRoadmaps = () => async (dispatch) => {
 	try {
+		//data.weekFocus[].completedHours
 		const res = await axios.get('/roadmap');
 
 		dispatch({
@@ -46,33 +75,32 @@ export const currentCategory = (category) => async (dispatch) => {
 };
 
 // add task id to state and use it in handleUpdateTask(taskId, task) action
-export const setTaskId = id => async dispatch => {
+export const setTaskId = (id) => async (dispatch) => {
 	try {
 		dispatch({
 			type: TASK_ID,
 			payload: id
-		})
+		});
 	} catch (error) {
 		dispatch({
 			type: ROADMAP_ERROR
-		})
+		});
 	}
 };
 
 // get current state to complete inputs from update modal
-export const setCurrentTask = task => async dispatch => {
+export const setCurrentTask = (task) => async (dispatch) => {
 	try {
 		dispatch({
 			type: CURRENT_TASK,
 			payload: task
-		})
+		});
 	} catch (error) {
 		dispatch({
 			type: ROADMAP_ERROR
-		})
+		});
 	}
-}
-
+};
 
 // MODALS actions
 // open/close add task modal
@@ -103,7 +131,7 @@ export const handleCloseModal = () => (dispatch) => {
 };
 
 // open/close update task modal
-export const handleOpenUpdateModal = () => dispatch => {
+export const handleOpenUpdateModal = () => (dispatch) => {
 	try {
 		dispatch({
 			type: UPDATE_TASK_MODAL,
@@ -112,11 +140,11 @@ export const handleOpenUpdateModal = () => dispatch => {
 	} catch (error) {
 		dispatch({
 			type: ROADMAP_ERROR
-		})
+		});
 	}
-}
+};
 
-export const handleCloseUpdateModal = () => dispatch => {
+export const handleCloseUpdateModal = () => (dispatch) => {
 	try {
 		dispatch({
 			type: UPDATE_TASK_MODAL,
@@ -125,9 +153,9 @@ export const handleCloseUpdateModal = () => dispatch => {
 	} catch (error) {
 		dispatch({
 			type: ROADMAP_ERROR
-		})
+		});
 	}
-}
+};
 
 // ADD, DELETE, UPDATE actions
 export const handleAddTask = (task) => async (dispatch) => {
@@ -161,7 +189,6 @@ export const handleDeleteTask = (id) => async (dispatch) => {
 
 		dispatch(loadRoadmaps());
 		deleteTaskAlert();
-
 	} catch (error) {
 		dispatch({
 			type: ROADMAP_ERROR

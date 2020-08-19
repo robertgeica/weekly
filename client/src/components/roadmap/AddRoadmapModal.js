@@ -43,9 +43,9 @@ const AddRoadmapModal = ({ toggleAddTaskModal, handleCloseModal, handleAddTask, 
 				<input type="text" name="completedHours" placeholder="completed hours" />
 				<input type="text" name="categoryName" defaultValue={crtCategory} placeholder="category name" />
 			</form>
-			<button className="add-task" onClick={() => handleAddTask(task)}>
-				{' '}
-				Add{' '}
+			<button className="button" onClick={() => handleAddTask(task)}>
+				
+				Add
 			</button>
 		</Modal>
 	);

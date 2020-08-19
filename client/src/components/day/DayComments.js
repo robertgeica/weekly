@@ -24,11 +24,14 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment }) => {
 			<span>Comments</span>
 			
 			<div className="input">
-				<input className="add-comment" type="text" onChange={onChange} placeholder="Add a new comment" />
+				<input className="add-comment" type="text" onChange={onChange} placeholder="Add a new comment" value={comment} />
 
 				<FontAwesomeIcon
 					className="addCommentButton"
-					onClick={(e) => {handleAddComment(data._id, currentDay, dayId, comment[0]); e.target.parentNode.childNodes[0].value = ''}}
+					onClick={(e) => {
+						handleAddComment(data._id, currentDay, dayId, comment[0]); 
+						setComment('');
+						}}
 					icon={faPaperPlane}
 				/>
 			</div>

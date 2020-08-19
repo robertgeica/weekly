@@ -19,6 +19,9 @@ import { loadRoadmaps } from '../../actions/roadmap';
 
 const WeekFocus = ({ data, day, roadmap, handleAddWeekFocus, handleDeleteWeekFocus }) => {
 
+	// console.log(data); //data.weekFocus[].completedHours if task ==
+	// console.log(day);
+	// console.log(roadmap); //roadmap[].task.completedHours if name ==
 	useEffect(() => {
 		store.dispatch(loadRoadmaps());
 	}, []);
@@ -36,8 +39,6 @@ const WeekFocus = ({ data, day, roadmap, handleAddWeekFocus, handleDeleteWeekFoc
 
 	const handleChange = text => e => {
 
-		console.log(e.target.textContent);
-
 		if(text == 'taskName' && e.target.value == 0 || e.target.value == undefined) {
 			setTask({...task, [text]: e.target.textContent});
 		} else {
@@ -46,7 +47,6 @@ const WeekFocus = ({ data, day, roadmap, handleAddWeekFocus, handleDeleteWeekFoc
 			
 	}
 
-	console.log(roadmap);
 	return (
 		<div className="week-focus">
 			
@@ -75,14 +75,14 @@ const WeekFocus = ({ data, day, roadmap, handleAddWeekFocus, handleDeleteWeekFoc
 				</form>
 
 				<button 
-					className="add-task" 
+					className="button" 
 					onClick={() => {handleAddWeekFocus(data._id, day, task); handleCloseModal();}}
 				>
 					Add Task
 				</button>
 
 			</Modal>
-			<button onClick={handleOpenModal}>Add new task</button>
+			<button className="button" onClick={handleOpenModal}>Add new task</button>
 
 			<table>
 				<thead>

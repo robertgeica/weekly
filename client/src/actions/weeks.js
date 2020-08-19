@@ -14,7 +14,8 @@ import {
 	UPDATE_DAY,
 	ADD_WEEKFOCUS,
 	UPDATE_WEEKFOCUS,
-	DELETE_WEEKFOCUS
+	DELETE_WEEKFOCUS,
+	ADD_DAY_SLOT
 } from './types';
 
 import {
@@ -153,85 +154,78 @@ export const handleAddWeek = () => async (dispatch) => {
 				{
 					day: (weekToAdd - 1) * 7 + 1,
 					completedHours: 0,
-					tasks: {
-						h1: '',
-						h2: '',
-						h3: '',
-						h4: '',
-						h5: ''
-					},
+					tasks: [
+						{
+							taskName: '',
+							slotNumber: 0
+						}
+					],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 2,
 					completedHours: 0,
-					tasks: {
-						h1: '',
-						h2: '',
-						h3: '',
-						h4: '',
-						h5: ''
-					},
+					tasks: [
+						{
+							taskName: '',
+							slotNumber: 0
+						}
+					],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 3,
 					completedHours: 0,
-					tasks: {
-						h1: '',
-						h2: '',
-						h3: '',
-						h4: '',
-						h5: ''
-					},
+					tasks: [
+						{
+							taskName: '',
+							slotNumber: 0
+						}
+					],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 4,
 					completedHours: 0,
-					tasks: {
-						h1: '',
-						h2: '',
-						h3: '',
-						h4: '',
-						h5: ''
-					},
+					tasks: [
+						{
+							taskName: '',
+							slotNumber: 0
+						}
+					],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 5,
 					completedHours: 0,
-					tasks: {
-						h1: '',
-						h2: '',
-						h3: '',
-						h4: '',
-						h5: ''
-					},
+					tasks: [
+						{
+							taskName: '',
+							slotNumber: 0
+						}
+					],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 6,
 					completedHours: 0,
-					tasks: {
-						h1: '',
-						h2: '',
-						h3: '',
-						h4: '',
-						h5: ''
-					},
+					tasks: [
+						{
+							taskName: '',
+							slotNumber: 0
+						}
+					],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 7,
 					completedHours: 0,
-					tasks: {
-						h1: '',
-						h2: '',
-						h3: '',
-						h4: '',
-						h5: ''
-					},
+					tasks: [
+						{
+							taskName: '',
+							slotNumber: 0
+						}
+					],
 					comments: []
 				}
 			]
@@ -272,6 +266,45 @@ export const handleDeleteWeek = (id) => async (dispatch) => {
 	}
 };
 
+// Add new slot at todayfocus
+export const handleAddSlot = (id, index, slotTask) => async (dispatch) => {
+	try {
+		const req = await axios.get('/weeks/' + id);
+		const data = req.data;
+
+		const crtDay = index % 7 == 0 ? 6 : index % 7 - 1;
+
+		const newSlot = {
+			taskName: slotTask,
+			slotNumber: data.days[crtDay].tasks.length
+		};
+
+		const newWeek = {
+			...data,
+			days: [
+				{
+					day: data.days[crtDay].day,
+					completedHours: data.days[crtDay].completedHours,
+					tasks: [ ...data.days[crtDay].tasks, newSlot ],
+					comments: [ ...data.days[crtDay].comments ]
+				}
+			]
+		};
+		await axios.post('/weeks/' + id, {newWeek, slotId: newSlot.slotNumber});
+
+		dispatch({
+			type: ADD_DAY_SLOT,
+			payload: [newWeek]
+		});
+
+		dispatch(loadWeeks());
+		dispatch(currentDay(newWeek.days[0]))
+
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 // Update completed hours of a day
 export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 	try {
@@ -301,7 +334,7 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 			]
 		};
 
-		await axios.post('/weeks/' + id, newWeek);
+		await axios.post('/weeks/' + id, {newWeek});
 		dispatch({
 			type: UPDATE_CH,
 			payload: [ data ]
@@ -309,7 +342,6 @@ export const handleUpdateCH = (id, operator, day) => async (dispatch) => {
 		dispatch(loadWeeks());
 
 		dispatch(currentDay(newWeek.days[0]));
-		updateWeekAlert();
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR
@@ -323,20 +355,13 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 	const dataReq = await axios.get('/weeks/' + weekId);
 	try {
 		const data = dataReq.data;
-
-		const updatedWeek = {
+		const newWeek = {
 			...data,
 			days: [
 				{
 					day: day,
 					completedHours: data.days[index].completedHours,
-					tasks: {
-						h1: data.days[index].tasks.h1,
-						h2: data.days[index].tasks.h2,
-						h3: data.days[index].tasks.h3,
-						h4: data.days[index].tasks.h4,
-						h5: data.days[index].tasks.h5
-					},
+					tasks: [...data.days[index].tasks],
 					comments: [ ...data.days[index].comments, comment ]
 				}
 			]
@@ -347,14 +372,14 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 			return false;
 		}
 
-		await axios.post('/weeks/' + weekId, updatedWeek);
+		await axios.post('/weeks/' + weekId, {newWeek});
 
 		dispatch({
 			type: ADD_COMMENT,
 			payload: [ data ]
 		});
 
-		dispatch(currentDay(updatedWeek.days[0]));
+		dispatch(currentDay(newWeek.days[0]));
 		dispatch(loadWeeks());
 		addCommentAlert();
 	} catch (error) {
@@ -377,32 +402,28 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 			comments.splice(index, 1);
 		}
 
-		const updatedWeek = {
+		const newWeek = {
 			...data,
 			days: [
 				{
 					day: day,
 					completedHours: data.days[dayIndex].completedHours,
-					tasks: {
-						h1: data.days[dayIndex].tasks.h1,
-						h2: data.days[dayIndex].tasks.h2,
-						h3: data.days[dayIndex].tasks.h3,
-						h4: data.days[dayIndex].tasks.h4,
-						h5: data.days[dayIndex].tasks.h5
-					},
+					tasks: [
+						...data.days[dayIndex].tasks
+					],
 					comments: [ ...comments ]
 				}
 			]
 		};
 
-		await axios.post('/weeks/' + weekId, updatedWeek);
+		await axios.post('/weeks/' + weekId, {newWeek});
 
 		dispatch({
 			type: DELETE_COMMENT,
 			payload: [ data ]
 		});
 
-		dispatch(currentDay(updatedWeek.days[0]));
+		dispatch(currentDay(newWeek.days[0]));
 		dispatch(loadWeeks());
 		removeCommentAlert();
 	} catch (error) {
@@ -413,33 +434,36 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 };
 
 // Update day tasks
-export const handleUpdateDay = (id, index, day, week) => async (dispatch) => {
+export const handleUpdateDay = (id, index, day, week, slotId) => async (dispatch) => {
 	try {
 		const req = await axios.get('/weeks/' + id);
 		const data = req.data;
-
+		// console.log(day.tasks[slotId].taskName);
+		console.log('slotId is', slotId);
+		console.log('day', day.tasks);
+		console.log('day is', day.tasks[slotId]);
+		// console.log('data is', data.days[index]);
 		const newWeek = {
 			...data,
-			weekFocus: [ ...week.weekFocus ],
+			weekFocus: [ ...data.weekFocus ],
 
 			days: [
 				{
 					day: data.days[index].day,
 					completedHours: data.days[index].completedHours,
-					tasks: {
-						h1: day.tasks.h1,
-						h2: day.tasks.h2,
-						h3: day.tasks.h3,
-						h4: day.tasks.h4,
-						h5: day.tasks.h5
-					},
+					tasks: [
+						// ...data.days[index].tasks,
+						...day.tasks
+						// here should be day tasks
+					],
 					comments: [ ...data.days[index].comments ]
 				}
 			]
 		};
+		// console.log(newWeek.days[0].tasks[slotId].slotNumber);
 
-		await axios.post('/weeks/' + id, newWeek);
-
+		await axios.post('/weeks/' + id, { newWeek });
+		console.log(newWeek);
 		dispatch({
 			type: UPDATE_DAY,
 			payload: [ data ]
@@ -474,7 +498,7 @@ export const handleAddWeekFocus = (id, day, task) => async (dispatch) => {
 			]
 		};
 
-		await axios.post('/weeks/' + id, newWeek);
+		await axios.post('/weeks/' + id, {newWeek});
 
 		dispatch({
 			type: ADD_WEEKFOCUS,
@@ -499,7 +523,7 @@ export const handleUpdateWeekFocus = (id, weekFocus) => async (dispatch) => {
 			weekFocus: [ ...weekFocus ]
 		};
 
-		await axios.post('/weeks/' + id, newWeek);
+		await axios.post('/weeks/' + id, {newWeek});
 
 		dispatch({
 			type: UPDATE_WEEKFOCUS,
@@ -523,15 +547,17 @@ export const handleDeleteWeekFocus = (id, task) => async (dispatch) => {
 
 		const newWeek = {
 			...data,
-			weekFocus: [ ] 
-		}
-		let findTask = weekFocus.findIndex(x => (x._id === task));
+			weekFocus: []
+		};
+		let findTask = weekFocus.findIndex((x) => x._id === task);
 
-		if(findTask > -1) {weekFocus.splice(findTask, 1)}
-		
-		newWeek.weekFocus = [...weekFocus];
-		
-		await axios.post('/weeks/' + id, newWeek);
+		if (findTask > -1) {
+			weekFocus.splice(findTask, 1);
+		}
+
+		newWeek.weekFocus = [ ...weekFocus ];
+
+		await axios.post('/weeks/' + id, {newWeek});
 
 		dispatch({
 			type: DELETE_WEEKFOCUS,

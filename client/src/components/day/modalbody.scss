@@ -67,30 +67,9 @@ th {
 	}
 }
 
-.week-focus {
-	button {
-		border: none;
-		border-radius: 3px;
-		padding: .4em;
-		outline: none;
-		font-weight: 500;
-		color: #fff;
-		width: 10em;
-		margin: .5em auto;
-		background-color: darken($color: $main-color, $amount: 5%);
-		cursor: pointer;
-		
-		&:hover {
-			background-color: lighten($color: $main-color, $amount: 10%);
-			cursor: pointer;
-		}
-
-		&:active {
-			background-color: #363b42;
-		}
-
-	}
-}
+// .week-focus {
+	
+// }
 
 .delete {
 	cursor: pointer;

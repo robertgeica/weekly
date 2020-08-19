@@ -33,3 +33,48 @@ body {
 input {
   font-family: 'Quicksand', sans-serif;
 }
+
+.button {
+  border: none;
+  border-radius: 3px;
+  padding: .4em;
+  outline: none;
+  font-weight: 500;
+  color: #fff;
+  width: 10em;
+  margin: .5em auto;
+  background-color: darken($color: $main-color, $amount: 5%);
+  cursor: pointer;
+  
+  &:hover {
+    background-color: lighten($color: $main-color, $amount: 10%);
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #363b42;
+  }
+
+}
+
+.button2 {
+  border: none;
+  border-radius: 3px;
+  padding: .4em;
+  outline: none;
+  font-weight: 500;
+  color: #fff;
+  background-color: $main-color;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: lighten($color: $main-color, $amount: 10%);
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #363b42;
+  }
+
+
+}

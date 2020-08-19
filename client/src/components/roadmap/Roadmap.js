@@ -12,6 +12,7 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import {
 	loadRoadmaps,
+	updateRoadmaps,
 	currentCategory,
 	handleOpenModal,
 	handleDeleteTask,
@@ -26,6 +27,7 @@ import UpdateTaskModal from './UpdateTaskModal';
 const Roadmap = ({ auth: { isAuthenticated, loading }, data, crtCategory, taskId }) => {
 	useEffect(() => {
 		store.dispatch(loadRoadmaps());
+		// store.dispatch(updateRoadmaps());
 	}, []);
 
 	// get all categories
@@ -66,7 +68,7 @@ const Roadmap = ({ auth: { isAuthenticated, loading }, data, crtCategory, taskId
 
 			<div className="tasks-list">
 				<div className="addtask-button-container">
-					<button className="add-task" onClick={() => store.dispatch(handleOpenModal())}>
+					<button className="button2" onClick={() => store.dispatch(handleOpenModal())}>
 						Add task
 					</button>
 				</div>

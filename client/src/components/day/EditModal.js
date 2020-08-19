@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { uuid } from 'uuidv4';
@@ -12,17 +12,20 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 	const [ dayTasks, setDayTasks ] = useState({
 		...day
 	});
+	const [ slotId, setSlotId ] = useState(0);
 
 	const onChangeTasks = (e) => {
+		// console.log('slot id', e.target.id);
+		setSlotId(parseInt(e.target.id));
+		// console.log(dayTasks);
 		const { tasks } = dayTasks;
-		console.log(tasks);
 
-		const newTasks = { ...tasks, [e.target.name]: e.target.value };
-		console.log(newTasks);
-		setDayTasks({ ...dayTasks, tasks: newTasks });
-		console.log(newTasks);
+		const objIndex = tasks.findIndex((task) => task.slotNumber == parseInt(e.target.id));
+		const updatedObj = { ...tasks[objIndex], [e.target.name]: e.target.value };
+		const updatedTasks = [ ...tasks.slice(0, objIndex), updatedObj, ...tasks.slice(objIndex + 1) ];
+
+		setDayTasks({ ...dayTasks, tasks: updatedTasks });
 	};
-
 	// WEEK FOCUS
 	const [ week, setWeek ] = useState({ ...data });
 
@@ -30,25 +33,26 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 
 	const onChangeWeekFocus = (e) => {
 		const { weekFocus } = week;
-		// console.log(weekFocus);
 
 		const taskName = e.target.parentNode.parentNode.childNodes[0].childNodes[0].value;
 		const allocatedHours = e.target.parentNode.parentNode.childNodes[1].childNodes[0].value;
 		const completedHours = e.target.parentNode.parentNode.childNodes[2].childNodes[0].value;
 
-		let findTask = weekFocus.findIndex(x => (x._id === e.target.id));
+		let findTask = weekFocus.findIndex((x) => x._id === e.target.id);
 
-		const newWeek = [...weekFocus];
-		
-		if(findTask == -1) {findTask = newWeek.length -1};
+		const newWeek = [ ...weekFocus ];
+
+		if (findTask == -1) {
+			findTask = newWeek.length - 1;
+		}
 		newWeek[findTask].task = taskName;
 		newWeek[findTask].allocatedHours = allocatedHours;
 		newWeek[findTask].completedHours = completedHours;
 
 		setNewWF(newWeek);
-
 	};
 
+	// console.log(slotId);
 	return (
 		<div className="modal-body">
 			<form onChange={onChangeTasks}>
@@ -56,34 +60,25 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 					<span>Today Focus</span>
 
 					<table>
-						<thead>
-							<tr>
-								<th>hour-1</th>
-								<th>hour-2</th>
-								<th>hour-3</th>
-								<th>hour-4</th>
-								<th>hour-5</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td className="text">
-									<input type="text" name="h1" defaultValue={day.tasks.h1} />
-								</td>
-								<td className="text">
-									<input type="text" name="h2" defaultValue={day.tasks.h2} />
-								</td>
-								<td className="text">
-									<input type="text" name="h3" defaultValue={day.tasks.h3} />
-								</td>
-								<td className="text">
-									<input type="text" name="h4" defaultValue={day.tasks.h4} />
-								</td>
-								<td className="text">
-									<input type="text" name="h5" defaultValue={day.tasks.h5} />
-								</td>
-							</tr>
-						</tbody>
+						<Fragment>
+							<thead>
+								<tr>{day.tasks.map((task) => <th key={task._id}>Slot {task.slotNumber}</th>)}</tr>
+							</thead>
+							<tbody>
+								<tr>
+									{day.tasks.map((task) => (
+										<td key={task._id} className="text">
+											<input
+												type="text"
+												name="taskName"
+												defaultValue={day.tasks[task.slotNumber].taskName}
+												id={task.slotNumber}
+											/>
+										</td>
+									))}
+								</tr>
+							</tbody>
+						</Fragment>
 					</table>
 				</div>
 			</form>
@@ -134,7 +129,7 @@ const EditModal = ({ data, day, handleUpdateDay, handleUpdateWeekFocus }) => {
 
 			<button
 				onClick={() => {
-					handleUpdateDay(data._id, currentDay, dayTasks, week);
+					handleUpdateDay(data._id, currentDay, dayTasks, week, slotId);
 					handleUpdateWeekFocus(data._id, newWF);
 				}}
 				type="button"

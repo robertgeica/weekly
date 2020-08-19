@@ -19,6 +19,7 @@ export const TOGGLE_EDIT_MODAL = 'TOGGLE_EDIT_MODAL';
 export const CURRENT_WEEK = 'CURRENT_WEEK';
 export const CURRENT_DAY = 'CURRENT_DAY';
 
+export const ADD_DAY_SLOT = 'ADD_DAY_SLOT';
 export const UPDATE_DAY = 'UPDATE_DAY';
 export const UPDATE_WEEKFOCUS = 'UPDATE_WEEKFOCUS';
 export const UPDATE_CH = 'UPDATE_CH';

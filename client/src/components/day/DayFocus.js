@@ -1,43 +1,74 @@
-import React from 'react';
+import React, { useState, Fragment } from 'react';
+import Modal from 'react-modal';
 
 import { connect } from 'react-redux';
+import store from '../../store/store';
 
-const DayFocus = ({ day }) => {
-	const h1 = day.tasks.h1;
-	const h2 = day.tasks.h2;
-	const h3 = day.tasks.h3;
-	const h4 = day.tasks.h4;
-	const h5 = day.tasks.h5;
+import { handleAddSlot } from '../../actions/weeks';
 
+const DayFocus = ({ day, week }) => {
+	const [ slotTask, setSlotTask ] = useState('');
+	const [ toggleModal, setToggleModal ] = useState(undefined);
+	const taskName = day.tasks[0].taskName;
+
+	const onChange = (e) => {
+		setSlotTask(e.target.value);
+	};
+
+	const handleOpenModal = () => {
+		setToggleModal(true);
+	}
+
+	const handleCloseModal = () => {
+		setToggleModal(false);
+	}
+
+	// console.log(slotTask);
 	return (
 		<div className="day-focus">
 			<span>Today Focus</span>
+			<button className="button" onClick={handleOpenModal}> Add slot </button>
+
+			<Modal
+				isOpen={toggleModal}
+				onRequestClose={handleCloseModal}
+				ariaHideApp={false}
+				closeTimeoutMS={200}
+				className="addroadmap-modal"
+				style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
+			>
+				<form onChange={onChange}>
+					<input type="text" name="name" placeholder="task name" />
+				</form>
+
+				<button className="button" onClick={() => {store.dispatch(handleAddSlot(week._id, day.day, slotTask)); handleCloseModal()}}>
+					{' '}
+					Add{' '}
+				</button>
+			</Modal>
 
 			<table>
-				<thead>
-					<tr>
-						<th>hour-1</th>
-						<th>hour-2</th>
-						<th>hour-3</th>
-						<th>hour-4</th>
-						<th>hour-5</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td className={h1 === '' ? 'incomplete' : 'green'}>{h1}</td>
-						<td className={h2 === '' ? 'incomplete' : 'green'}>{h2}</td>
-						<td className={h3 === '' ? 'incomplete' : 'green'}>{h3}</td>
-						<td className={h4 === '' ? 'incomplete' : 'green'}>{h4}</td>
-						<td className={h5 === '' ? 'incomplete' : 'green'}>{h5 === undefined ? '-' : h5}</td>
-					</tr>
-				</tbody>
+				<Fragment>
+					<thead>
+						<tr>{day.tasks.map((task) => <th key={task._id}>Slot {task.slotNumber}</th>)}</tr>
+					</thead>
+					<tbody>
+						<tr>
+							{day.tasks.map((task) => (
+								<td key={task._id} className={task.taskName === '' ? 'incomplete' : 'green'}>
+									{task.taskName}
+								</td>
+							))}
+						</tr>
+					</tbody>
+				</Fragment>
 			</table>
 		</div>
 	);
 };
 
 const mapStateToProps = (state) => ({
-	day: state.weeks.currentDay
+	day: state.weeks.currentDay,
+	week: state.weeks.currentWeek
 });
 export default connect(mapStateToProps, {})(DayFocus);
