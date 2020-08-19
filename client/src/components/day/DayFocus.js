@@ -1,5 +1,9 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import Modal from 'react-modal';
+import { uuid } from 'uuidv4';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import store from '../../store/store';
@@ -8,13 +12,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { handleAddSlot, handleDeleteSlot } from '../../actions/weeks';
+import { loadRoadmaps } from '../../actions/roadmap';
 
-const DayFocus = ({ day, week }) => {
+const DayFocus = ({ day, week, roadmap }) => {
 	const [ slotTask, setSlotTask ] = useState('');
 	const [ toggleModal, setToggleModal ] = useState(undefined);
 
-	const onChange = (e) => {
-		setSlotTask(e.target.value);
+	useEffect(() => {
+		store.dispatch(loadRoadmaps());
+	}, []);
+
+	const handleChange = (e) => {
+		setSlotTask(e.target.textContent);
 	};
 
 	const handleOpenModal = () => {
@@ -25,10 +34,9 @@ const DayFocus = ({ day, week }) => {
 		setToggleModal(false);
 	};
 
-	// console.log(slotTask);
 
-	console.log(week);
-	console.log(day);
+	// console.log(week);
+	// console.log(day);
 	return (
 		<div className="day-focus">
 			<span>Today Focus</span>
@@ -45,8 +53,16 @@ const DayFocus = ({ day, week }) => {
 				className="addroadmap-modal"
 				style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
 			>
-				<form onChange={onChange}>
-					<input type="text" name="name" placeholder="task name" />
+				<form >
+					<Autocomplete
+						freeSolo
+						options={roadmap}
+						getOptionLabel={(option) => option.task.name}
+						onChange={handleChange}
+						renderInput={
+							(params) => <TextField onChange={handleChange} {...params} label="Task" />
+						}
+					/>
 				</form>
 
 				<button
@@ -66,16 +82,14 @@ const DayFocus = ({ day, week }) => {
 					<thead>
 						<tr>
 							{day.tasks.map((task) => (
-								<Fragment>
-									<th key={task._id}>Slot {task.slotNumber}</th>
-								</Fragment>
+									<th key={uuid()}>Slot {task.slotNumber}</th>
 							))}
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							{day.tasks.map((task) => (
-								<td key={task._id} className={task.taskName === '' ? 'incomplete' : 'green'}>
+								<td key={uuid()} className={task.taskName === '' ? 'incomplete' : 'green'}>
 									{task.taskName}
 								</td>
 							))}
@@ -83,7 +97,7 @@ const DayFocus = ({ day, week }) => {
 
 						<tr>
 							{day.tasks.map((task) => (
-								<td>
+								<td key={uuid()}>
 									<FontAwesomeIcon
 										onClick={() => store.dispatch(handleDeleteSlot(week._id, day, task))}
 										icon={faTrashAlt}
@@ -99,8 +113,14 @@ const DayFocus = ({ day, week }) => {
 	);
 };
 
+DayFocus.propTypes = {
+	loadRoadmaps: PropTypes.func.isRequired,
+};
+
+
 const mapStateToProps = (state) => ({
 	day: state.weeks.currentDay,
-	week: state.weeks.currentWeek
+	week: state.weeks.currentWeek,
+	roadmap: state.roadmap.data
 });
-export default connect(mapStateToProps, {})(DayFocus);
+export default connect(mapStateToProps, {loadRoadmaps})(DayFocus);
