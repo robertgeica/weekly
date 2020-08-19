@@ -11,13 +11,13 @@ let WeekSchema = new Schema({
 	},
 	weekFocus: [
 		{
-			task: {
+			task: { 
 				type: String
 			},
-			allocatedHours: {
+			allocatedHours: { 
 				type: String
 			},
-			completedHours: {
+			completedHours: { 
 				type: String
 			}
 		}
@@ -30,16 +30,23 @@ let WeekSchema = new Schema({
 			completedHours: {
 				type: Number
 			},
-			tasks: [
-				{
-					taskName: {
-						type: String
-					},
-					slotNumber: {
-						type: Number
-					}
+			tasks: {
+				h1: {
+					type: String
+				},
+				h2: {
+					type: String
+				},
+				h3: {
+					type: String
+				},
+				h4: {
+					type: String
+				},
+				h5: {
+					type: String
 				}
-			],
+			},
 			comments: []
 		}
 	]

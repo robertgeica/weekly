@@ -73,19 +73,19 @@ router.get('/:id', auth, async (req, res) => {
 // @route           POST /weeks/:id
 // @description     Update route
 router.post('/:id', auth, async (req, res) => {
+	const { newWeek, slotId } = req.body;
+
 	try {
 		let week = await Week.findById(req.params.id);
 
 		if(week.userId !== req.user.id) {
-			console.log('not allowed to delete this week');
+			console.log('not allowed to edit this week');
 		}
 
 		if (!week) res.status(404).send('No week to update.');
-		// update week focus
-		week.weekFocus = req.body.weekFocus;
 
-		// update day tasks
-		const crrDayArr = req.body.days.map((d) => d.day);
+		// get current day
+		const crrDayArr = newWeek.days.map((d) => d.day);
 		const crrDay = crrDayArr[0];
 
 		// check if last day of week
@@ -96,21 +96,20 @@ router.post('/:id', auth, async (req, res) => {
 			dayToEdit = crrDay % 7 - 1;
 		}
 
-		week.days[dayToEdit].tasks.h1 = req.body.days[0].tasks.h1;
-		week.days[dayToEdit].tasks.h2 = req.body.days[0].tasks.h2;
-		week.days[dayToEdit].tasks.h3 = req.body.days[0].tasks.h3;
-		week.days[dayToEdit].tasks.h4 = req.body.days[0].tasks.h4;
-		week.days[dayToEdit].tasks.h5 = req.body.days[0].tasks.h5;
-
+		// update weekfocus and day tasks
+		week.weekFocus = newWeek.weekFocus;
+		week.days[dayToEdit].tasks = newWeek.days[0].tasks;
+	
 		// update completedhours
-		week.days[dayToEdit].completedHours = req.body.days[0].completedHours;
+		week.days[dayToEdit].completedHours = newWeek.days[0].completedHours;
 
 		// update comments
-		week.days[dayToEdit].comments = req.body.days[0].comments;
+		week.days[dayToEdit].comments = newWeek.days[0].comments;
 
 		await week.save();
 		res.json('Week Updated successfully.');
 	} catch (error) {
+		console.log(error);
 		res.status(400).send('Error editing the week.');
 	}
 });
