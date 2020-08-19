@@ -15,7 +15,8 @@ import {
 	ADD_WEEKFOCUS,
 	UPDATE_WEEKFOCUS,
 	DELETE_WEEKFOCUS,
-	ADD_DAY_SLOT
+	ADD_DAY_SLOT,
+	DELETE_SLOT
 } from './types';
 
 import {
@@ -389,6 +390,44 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 	}
 };
 
+// Delete slot
+export const handleDeleteSlot = (weekId, day, task) => async dispatch => {
+	const req = await axios.get('/weeks/' + weekId);
+
+	try {
+		const data = req.data;
+		const tasks = day.tasks;
+		const index = tasks.indexOf(task);
+
+		console.log(day);
+		if (index > -1) { tasks.splice(index, 1); }
+		
+		const newWeek = {
+			...data,
+			days: [
+				{
+					...day,
+					tasks: [...tasks]
+				}
+			]
+		};
+
+		await axios.post('/weeks/' + weekId, { newWeek });
+
+		dispatch({
+			type: DELETE_SLOT,
+			payload: [ data ]
+		});
+
+		dispatch(loadWeeks());
+		dispatch(currentDay(newWeek.days[0]));
+
+	} catch (error) {
+		dispatch({
+			type: DATA_ERROR
+		})
+	}
+}
 // Delete comment
 export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (dispatch) => {
 	const dataReq = await axios.get('/weeks/' + weekId);

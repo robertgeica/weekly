@@ -25,6 +25,7 @@ export const UPDATE_WEEKFOCUS = 'UPDATE_WEEKFOCUS';
 export const UPDATE_CH = 'UPDATE_CH';
 export const ADD_WEEKFOCUS = 'ADD_WEEKFOCUS';
 export const DELETE_WEEKFOCUS = 'DELETE_WEEKFOCUS';
+export const DELETE_SLOT = 'DELETE_SLOT';
 
 
 export const ADD_COMMENT = 'ADD_COMMENT';
