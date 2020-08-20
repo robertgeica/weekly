@@ -45,7 +45,10 @@ const Weeks = ({ auth: {isAuthenticated, loading }, state }) => {
 			{state.map((week) => {
 				return (
 					<div key={week._id} className="week-row">
-						{week.days.map((day) => (
+						{week.days.map((day) => {
+							// console.log(day.day);
+						
+							return (
 							<div key={day.day} className={completeStatus(day.completedHours)}>
 								{ day.day == crtDay.day ? <DayModal /> : '' }
 
@@ -70,7 +73,7 @@ const Weeks = ({ auth: {isAuthenticated, loading }, state }) => {
 									</span>
 								</div>
 							</div>
-						))}
+						)})}
 					</div>
 				);
 			})}

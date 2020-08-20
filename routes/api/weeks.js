@@ -89,12 +89,20 @@ router.post('/:id', auth, async (req, res) => {
 		const crrDay = crrDayArr[0];
 
 		// check if last day of week
-		let dayToEdit = crrDay % 7 - 1;
-		if (crrDay % 7 == 0) {
-			dayToEdit = 6;
-		} else {
-			dayToEdit = crrDay % 7 - 1;
-		}
+		let dayToEdit = crrDay % 7 -1;
+		// console.log('crr dday', crrDay);
+		if(dayToEdit === -1) { dayToEdit = 0 }
+		if(crrDay === 7) { dayToEdit = 6 }
+
+		// console.log(`crtDay ${crrDay}`);
+		// console.log(`week.days[${dayToEdit}]`);
+
+
+		// verifica daca ziua = 1 sau 7 si pune la dayToEdit 0 sau 6
+
+		// at add new comment, crrDay is +1
+
+
 
 		// update weekfocus and day tasks
 		week.weekFocus = newWeek.weekFocus;
@@ -106,7 +114,12 @@ router.post('/:id', auth, async (req, res) => {
 		// update comments
 		week.days[dayToEdit].comments = newWeek.days[0].comments;
 
+		// console.log(week.days[dayToEdit].comments);
+		// console.log(newWeek.days[0].comments);
 		await week.save();
+		// console.log(week.days[0].comments);
+		// console.log(newWeek.days[0].comments);
+		// console.log('dayToEdit', dayToEdit);
 		res.json('Week Updated successfully.');
 	} catch (error) {
 		console.log(error);

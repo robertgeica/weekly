@@ -123,14 +123,15 @@ th {
 				margin: 0 1em;
 			}
 
-			.deletecomment-container {
+			.commentbuttons-container {
 				margin: auto 0;
 				cursor: pointer;
 				padding: auto;
 
-				.deleteComment {
+				.delete-comment, .edit-comment {
 					border: none;
 					outline: none;
+					margin: 0 .5em;
 				}
 			}
 		}
