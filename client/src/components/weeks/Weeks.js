@@ -34,10 +34,9 @@ const Weeks = ({ auth: {isAuthenticated, loading }, state }) => {
 
 	const crtDay = selectDay();
 
-	if(loading == false && isAuthenticated == false) {
+	if(!loading && !isAuthenticated) {
 		return <Redirect to="/login" />	
 	}
-
 	return (
 		<div className="weeks-container">
 			<AddWeek />
