@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
 	const token = req.header('auth-token');
 
 	// Check if token exists
-	if (!token) return res.redirect('/login')
+	if (!token) return res.status(401).json({ msg: 'No token, auth denied. ' });
 
 
 	try {
