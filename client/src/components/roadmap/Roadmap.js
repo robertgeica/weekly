@@ -40,8 +40,8 @@ const Roadmap = ({ auth: { isAuthenticated, loading }, data, crtCategory, taskId
 	categories = [ ...new Set(categories) ];
 
 	// redirect to /login if user is not authenticated
-	if (loading == false && isAuthenticated == false) {
-		return <Redirect to="/login" />;
+	if(!loading && !isAuthenticated) {
+		return <Redirect to="/login" />	
 	}
 
 	return (
