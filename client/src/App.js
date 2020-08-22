@@ -11,6 +11,8 @@ import Roadmap from './components/roadmap/Roadmap';
 import ForgotPassword from './components/auth/ForgotPassword';
 import ResetPassword from './components/auth/ResetPassword';
 
+import './app.scss';
+
 // Redux
 import { Provider } from 'react-redux';
 import store from './store/store';
