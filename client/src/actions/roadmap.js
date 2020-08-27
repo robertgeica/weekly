@@ -30,8 +30,8 @@ export const updateRoadmaps = () => async (dispatch) => {
 			with sum of completeHours from week.weekFocus
 	*/
 	try {
-		const roadmap = await axios.get('/roadmap');
-		const weeks = await axios.get('/weeks');
+		const roadmap = await axios.get('/api/roadmap');
+		const weeks = await axios.get('/api/weeks');
 
 		// dispatch({
 			// type: ROADMAP_LOADED,
@@ -47,7 +47,7 @@ export const updateRoadmaps = () => async (dispatch) => {
 export const loadRoadmaps = () => async (dispatch) => {
 	try {
 		//data.weekFocus[].completedHours
-		const res = await axios.get('/roadmap');
+		const res = await axios.get('/api/roadmap');
 
 		dispatch({
 			type: ROADMAP_LOADED,
@@ -160,7 +160,7 @@ export const handleCloseUpdateModal = () => (dispatch) => {
 // ADD, DELETE, UPDATE actions
 export const handleAddTask = (task) => async (dispatch) => {
 	try {
-		const tasks = await axios.post('/roadmap', task);
+		const tasks = await axios.post('/api/roadmap', task);
 
 		dispatch({
 			type: ADD_TASK,
@@ -180,7 +180,7 @@ export const handleAddTask = (task) => async (dispatch) => {
 
 export const handleDeleteTask = (id) => async (dispatch) => {
 	try {
-		const res = await axios.delete('/roadmap/' + id);
+		const res = await axios.delete('/api/roadmap/' + id);
 
 		dispatch({
 			type: DELETE_TASK,
@@ -199,12 +199,12 @@ export const handleDeleteTask = (id) => async (dispatch) => {
 
 export const handleUpdateTask = (id, newTask) => async (dispatch) => {
 	// get task to edit
-	const res = await axios.get('/roadmap/' + id);
+	const res = await axios.get('/api/roadmap/' + id);
 	const data = res.data;
 
 	try {
 		// add new task
-		await axios.post('/roadmap/' + id, newTask);
+		await axios.post('/api/roadmap/' + id, newTask);
 
 		dispatch({
 			type: UPDATE_TASK,

@@ -12,7 +12,7 @@ export const loadUser = () => async (dispatch) => {
 	}
 
 	try {
-		const res = await axios.get('/auth');
+		const res = await axios.get('/api/auth');
 
 		dispatch({
 			type: USER_LOADED,
@@ -34,7 +34,7 @@ export const register = ({ username, email, password }) => async (dispatch) => {
 	const body = JSON.stringify({ username, email, password });
 
 	try {
-		const res = await axios.post('/register', body, config);
+		const res = await axios.post('/api/register', body, config);
 
 		dispatch({
 			type: REGISTER_SUCCESS,
@@ -60,7 +60,7 @@ export const login = (email, password) => async (dispatch) => {
 	const body = { email, password };
 
 	try {
-		const res = await axios.post('/auth', body);
+		const res = await axios.post('/api/auth', body);
 
 		dispatch({
 			type: LOGIN_SUCCESS,
@@ -92,7 +92,7 @@ export const logout = () => (dispatch) => {
 export const forgotPassword = (email) => async dispatch => {
 
 	try {
-		const res = await axios.put('auth/forgotpassword', email);
+		const res = await axios.put('api/auth/forgotpassword', email);
 
 		dispatch({
 			type: FORGOT_PASSWORD,
@@ -117,7 +117,7 @@ export const resetPassword = ({email, password, token}) => async dispatch => {
 	};
 
 	try {
-		const res = await axios.put('/auth/resetpassword', formData);
+		const res = await axios.put('/api/auth/resetpassword', formData);
 		
 		dispatch({
 			type: RESET_PASSWORD,
