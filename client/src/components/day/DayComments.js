@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 
 import { uuid } from 'uuidv4';
+import { format } from 'date-fns';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -17,14 +18,14 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 	const dayId = day.day;
 	const currentDay = dayId % 7 == 0 ? 6 : dayId % 7 - 1;
 
-	const [ comment, setComment ] = useState('');
+	const [ comment, setComment ] = useState({});
 	const [ toggle, setToggle ] = useState(undefined);
 	const [ commentToEdit, setCommentToEdit ] = useState();
 
 	const handleOpenModal = () => setToggle(true);
 	const handleCloseModal = () => setToggle(false);
 
-	const onChange = (e) => setComment([ e.target.value ]);
+	const onChange = (e) => setComment({comment: e.target.value, date: Date.now()});
 
 	const checkText = (e) => {
 		const t1 = e.target.parentNode.parentNode.parentNode.childNodes[0].textContent;
@@ -34,6 +35,7 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 		if(t2.length === 0) setCommentToEdit(t1);
 	};
 
+	console.log(comment);
 	return (
 		<div className="day-comments">
 			<span>Comments</span>
@@ -44,13 +46,13 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 					type="text"
 					onChange={onChange}
 					placeholder="Add a new comment"
-					value={comment}
+					value={comment.comment}
 				/>
 
 				<FontAwesomeIcon
 					className="addCommentButton"
 					onClick={(e) => {
-						handleAddComment(data._id, currentDay, dayId, comment[0]);
+						handleAddComment(data._id, currentDay, dayId, comment);
 						setComment('');
 					}}
 					icon={faPaperPlane}
@@ -60,7 +62,7 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 			<div className="comments-container">
 				{day.comments.map((c) => (
 					<div key={uuid()} className="comment">
-						<p>{c}</p>
+						<p>{c.comment}</p> <p>{format(c.date, 'dd/MM/yyyy kk:mm:ss')}</p>
 						<div className="commentbuttons-container">
 							<FontAwesomeIcon
 								icon={faTrashAlt}

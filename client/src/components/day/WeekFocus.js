@@ -107,7 +107,6 @@ const WeekFocus = ({ data, day, roadmap, handleAddWeekFocus, handleDeleteWeekFoc
 									handleDeleteWeekFocus(data._id, e.target.parentNode.childNodes[0].id);
 								}}
 							>
-								<FontAwesomeIcon icon={faTrashAlt} />
 							</td>
 						</tr>
 					))}

@@ -60,7 +60,6 @@ const DayFocus = ({ day, week, roadmap }) => {
 		setToggleModal(false);
 	};
 
-	console.log(newRoadmapTask);
 	// console.log(week);
 	// console.log(day);
 	return (
