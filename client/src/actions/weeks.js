@@ -402,16 +402,15 @@ export const handleDeleteSlot = (weekId, day, task) => async (dispatch) => {
 export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (dispatch) => {
 	const dataReq = await axios.get('/api/weeks/' + weekId);
 
-	console.log('day', day);
-	console.log('dayIndex', dayIndex);
+	// console.log('day', day);
+	// console.log('dayIndex', dayIndex);
 	try {
 		const data = dataReq.data;
 		const comments = data.days[dayIndex].comments;
-		const index = comments.indexOf(comment);
 
-		if (index > -1) {
-			comments.splice(index, 1);
-		}
+		const filteredComments = comments.filter(com => {
+			return com.comment !== comment
+		});
 
 		const newWeek = {
 			...data,
@@ -420,7 +419,7 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 					day: day,
 					completedHours: data.days[dayIndex].completedHours,
 					tasks: [ ...data.days[dayIndex].tasks ],
-					comments: [ ...comments ]
+					comments: [ ...filteredComments ]
 				}
 			]
 		};
@@ -445,6 +444,7 @@ export const handleDeleteComment = (dayIndex, day, comment, weekId) => async (di
 export const handleUpdateComment = (id, dayIndex, newComment, commentToEdit, day) => async (dispatch) => {
 
 
+	console.log(newComment, commentToEdit);
 	// console.log('day', day);
 	// console.log('dayIndex', dayIndex);
 
@@ -452,14 +452,30 @@ export const handleUpdateComment = (id, dayIndex, newComment, commentToEdit, day
 		const req = await axios.get('/api/weeks/' + id);
 		const data = req.data;
 
-		const atIndex = (element) => element == commentToEdit;
+		// const atIndex = (element) => element == commentToEdit;
 		const commentsArr = data.days[dayIndex].comments;
-		// console.log(data.days[dayIndex].comments);
+		console.log(commentsArr);
 
-		const commentIndex = commentsArr.findIndex(atIndex);
+		const filteredComments = commentsArr.filter(com => {
+			return com.comment !== commentToEdit
+		});
+		console.log(filteredComments);
+
+		const editedComment = {
+			comment: newComment,
+			date: Date.now()
+		};
+
+		// console.log(editedComment);
+		const newCommentsArr = [ ...filteredComments, editedComment];
+		console.log(filteredComments, newCommentsArr);
+
+
+		// console.log(data.days[dayIndex].comments);
+		// const commentIndex = commentsArr.findIndex(atIndex);
 		// console.log(commentToEdit);
 		// console.log(commentsArr[commentIndex]);
-		commentsArr[commentIndex] = newComment;
+		// commentsArr[commentIndex] = newComment;
 
 		const newWeek = {
 			...data,
@@ -468,7 +484,7 @@ export const handleUpdateComment = (id, dayIndex, newComment, commentToEdit, day
 					day: day,
 					completedHours: data.days[dayIndex].completedHours,
 					tasks: [ ...data.days[dayIndex].tasks ],
-					comments: [ ...commentsArr ]
+					comments: [ ...newCommentsArr ]
 				}
 			]
 		};
@@ -483,8 +499,9 @@ export const handleUpdateComment = (id, dayIndex, newComment, commentToEdit, day
 		});
 
 		// console.log(data.days[dayIndex]);
-		dispatch(currentDay(data.days[dayIndex]));
+		dispatch(currentDay(newWeek.days[0]));
 		dispatch(loadWeeks());
+		console.log('updated');
 	} catch (error) {
 		dispatch({
 			type: DATA_ERROR

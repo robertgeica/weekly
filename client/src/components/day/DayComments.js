@@ -28,14 +28,17 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 	const onChange = (e) => setComment({comment: e.target.value, date: Date.now()});
 
 	const checkText = (e) => {
-		const t1 = e.target.parentNode.parentNode.parentNode.childNodes[0].textContent;
-		const t2 = e.target.parentNode.parentNode.childNodes[0].textContent;
+		const t1 = e.target.parentNode.parentNode.childNodes[0];
+		const t2 = e.target.parentNode.parentNode.parentNode.childNodes[0];
 
-		if(t1.length === 0) setCommentToEdit(t2);
-		if(t2.length === 0) setCommentToEdit(t1);
+		// console.log(t1);
+		// console.log(t2);
+		console.log(t1);
+		console.log(t2);
+		if(t1.className === 'com') setCommentToEdit(t1.textContent);
+		if(t2.className === 'com') setCommentToEdit(t2.textContent);
 	};
 
-	console.log(comment);
 	return (
 		<div className="day-comments">
 			<span>Comments</span>
@@ -53,7 +56,7 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 					className="addCommentButton"
 					onClick={(e) => {
 						handleAddComment(data._id, currentDay, dayId, comment);
-						setComment('');
+						setComment({comment: ''});
 					}}
 					icon={faPaperPlane}
 				/>
@@ -62,8 +65,13 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 			<div className="comments-container">
 				{day.comments.map((c) => (
 					<div key={uuid()} className="comment">
-						<p>{c.comment}</p> <p>{format(c.date, 'dd/MM/yyyy kk:mm:ss')}</p>
+						<p className="com">{c.comment}</p> 
+
+
 						<div className="commentbuttons-container">
+							<p>{format(c.date, 'dd/MM/yyyy kk:mm:ss')}</p>
+
+							
 							<FontAwesomeIcon
 								icon={faTrashAlt}
 								className="delete-comment"
