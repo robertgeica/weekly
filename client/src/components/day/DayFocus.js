@@ -12,18 +12,44 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { handleAddSlot, handleDeleteSlot } from '../../actions/weeks';
-import { loadRoadmaps } from '../../actions/roadmap';
+import { loadRoadmaps, handleAddTask } from '../../actions/roadmap';
 
 const DayFocus = ({ day, week, roadmap }) => {
 	const [ slotTask, setSlotTask ] = useState('');
 	const [ toggleModal, setToggleModal ] = useState(undefined);
-
+	const [ newRoadmapTask, setNewRoadmapTask ] = useState({});
 	useEffect(() => {
 		store.dispatch(loadRoadmaps());
 	}, []);
 
+
+
 	const handleChange = (e) => {
-		setSlotTask(e.target.textContent);
+
+		setSlotTask(e.target.value || e.target.textContent);
+
+		// create a list of all tasks in roadmap
+		let roadmapTasksArr = [];
+		// console.log(roadmap);
+		roadmap.map(taskName => {
+			roadmapTasksArr.push(taskName.task.name);
+		});
+
+		// create the new roadmap task
+		const newTask = {
+			categoryName: 'uncategorized',
+			task: {
+				name: e.target.value || e.target.textContent,
+				allocatedHours: 0,
+				completedHours: 0
+			}
+		};
+
+		// check if roadmap task already exists
+		roadmapTasksArr.includes(e.target.value || e.target.textContent) ?
+		setNewRoadmapTask({}) :
+		setNewRoadmapTask(newTask);
+
 	};
 
 	const handleOpenModal = () => {
@@ -34,7 +60,7 @@ const DayFocus = ({ day, week, roadmap }) => {
 		setToggleModal(false);
 	};
 
-
+	console.log(newRoadmapTask);
 	// console.log(week);
 	// console.log(day);
 	return (
@@ -70,6 +96,12 @@ const DayFocus = ({ day, week, roadmap }) => {
 					onClick={() => {
 						store.dispatch(handleAddSlot(week._id, day.day, slotTask));
 						handleCloseModal();
+
+						// if no new roadmap task, don't add a new one
+						(JSON.stringify(newRoadmapTask) === '{}') ? 
+						console.log(null) :
+						store.dispatch(handleAddTask(newRoadmapTask));
+
 					}}
 				>
 					{' '}

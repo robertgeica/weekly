@@ -28,6 +28,7 @@ const AddRoadmapModal = ({ toggleAddTaskModal, handleCloseModal, handleAddTask, 
 		setTask(newTask);
 	};
 
+
 	return (
 		<Modal
 			isOpen={!!toggleAddTaskModal}

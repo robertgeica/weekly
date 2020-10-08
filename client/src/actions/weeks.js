@@ -156,78 +156,43 @@ export const handleAddWeek = () => async (dispatch) => {
 				{
 					day: (weekToAdd - 1) * 7 + 1,
 					completedHours: 0,
-					tasks: [
-						{
-							taskName: '',
-							slotNumber: 0
-						}
-					],
+					tasks: [],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 2,
 					completedHours: 0,
-					tasks: [
-						{
-							taskName: '',
-							slotNumber: 0
-						}
-					],
+					tasks: [],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 3,
 					completedHours: 0,
-					tasks: [
-						{
-							taskName: '',
-							slotNumber: 0
-						}
-					],
+					tasks: [],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 4,
 					completedHours: 0,
-					tasks: [
-						{
-							taskName: '',
-							slotNumber: 0
-						}
-					],
+					tasks: [],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 5,
 					completedHours: 0,
-					tasks: [
-						{
-							taskName: '',
-							slotNumber: 0
-						}
-					],
+					tasks: [],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 6,
 					completedHours: 0,
-					tasks: [
-						{
-							taskName: '',
-							slotNumber: 0
-						}
-					],
+					tasks: [],
 					comments: []
 				},
 				{
 					day: (weekToAdd - 1) * 7 + 7,
 					completedHours: 0,
-					tasks: [
-						{
-							taskName: '',
-							slotNumber: 0
-						}
-					],
+					tasks: [],
 					comments: []
 				}
 			]
@@ -396,8 +361,8 @@ export const handleAddComment = (weekId, index, day, comment) => async (dispatch
 
 // Delete slot
 export const handleDeleteSlot = (weekId, day, task) => async (dispatch) => {
-	const req = await axios.get('/weeks/' + weekId);
-
+	const req = await axios.get('/api/weeks/' + weekId);
+	console.log(req);
 	try {
 		const data = req.data;
 		const tasks = day.tasks;
@@ -418,7 +383,7 @@ export const handleDeleteSlot = (weekId, day, task) => async (dispatch) => {
 			]
 		};
 
-		await axios.post('/weeks/' + weekId, { newWeek });
+		await axios.post('/api/weeks/' + weekId, { newWeek });
 
 		dispatch({
 			type: DELETE_SLOT,

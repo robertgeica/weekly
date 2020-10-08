@@ -159,6 +159,7 @@ export const handleCloseUpdateModal = () => (dispatch) => {
 
 // ADD, DELETE, UPDATE actions
 export const handleAddTask = (task) => async (dispatch) => {
+	console.log(task);
 	try {
 		const tasks = await axios.post('/api/roadmap', task);
 
