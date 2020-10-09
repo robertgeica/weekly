@@ -102,8 +102,10 @@
   background: $main-color;
   color: white;
   padding: .5em;
-  outline: none;
-
+	outline: none;
+	border: 2px solid black;
+	border-radius: 5px;
+	
   form {
     display: flex;
     flex-direction: column;

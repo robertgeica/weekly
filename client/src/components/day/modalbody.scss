@@ -57,6 +57,11 @@ th {
 	}
 }
 
+.section-title {
+	display: flex;
+	flex-direction: row;
+}
+
 .day-focus {
 	.incomplete {
 		background-color: red;
@@ -141,6 +146,35 @@ th {
 			}
 		}
 	}
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: flex;
+	flex-direction: column;
+}
+
+.visibility-checkbox {
+	background-color: red;
+	padding: 2em;
+}
+
+
+
+.delete-comment, .edit-comment {
+	width: auto;
+	height: 1em;
+}
+
+.delete-comment {
+	background-color: red;
+}
+
+.edit-comment {
+	background-color: blue;
 }
 
 // EditModal

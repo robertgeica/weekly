@@ -39,9 +39,27 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 		if(t2.className === 'com') setCommentToEdit(t2.textContent);
 	};
 
+
+	const [ toggleVis, setToggleVis ] = useState(true);
+
+	const handleContainerVisibility = () => {
+		setToggleVis(!toggleVis);
+	};
+
 	return (
 		<div className="day-comments">
-			<span>Comments</span>
+			<div className="section-title">
+				<span>Comments</span>
+				
+				<input 
+					name="visibility"
+					className="visibility-checkbox"
+					type="checkbox" 
+					onChange={handleContainerVisibility} checked={toggleVis} 
+				/>
+			</div>
+			
+			<div className={`${toggleVis ? 'show' : 'hide'}`}>
 
 			<div className="input">
 				<input
@@ -72,17 +90,17 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 							<p>{format(c.date, 'dd/MM/yyyy kk:mm:ss')}</p>
 
 							
-							<FontAwesomeIcon
-								icon={faTrashAlt}
+							<p
 								className="delete-comment"
 								onClick={(e) =>
 									handleDeleteComment(
 										currentDay,
 										dayId,
-										e.target.parentNode.parentNode.parentNode.childNodes[0].textContent,
+										e.target.parentNode.parentNode.parentNode.childNodes[0].childNodes[0].textContent,
 										data._id
-									)}
-							/>
+									)
+									}
+							> </p>
 
 							<Modal
 								isOpen={!!toggle}
@@ -112,7 +130,7 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 								</button>
 							</Modal>
 
-							<FontAwesomeIcon
+							<p
 								className="edit-comment"
 								onClick={(e) => {
 									handleOpenModal();
@@ -120,12 +138,12 @@ const DayComments = ({ data, day, handleAddComment, handleDeleteComment, handleU
 									// console.log(e.target.parentNode.parentNode.parentNode.childNodes[0].textContent);
 									// setCommentToEdit(e.target.parentNode.parentNode.childNodes[0].textContent);
 								}}
-								icon={faPen}
-							/>
+							> </p>
 						</div>
 					</div>
 				))}
 			</div>
+		</div>
 		</div>
 	);
 };

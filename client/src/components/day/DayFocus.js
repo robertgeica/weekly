@@ -22,16 +22,13 @@ const DayFocus = ({ day, week, roadmap }) => {
 		store.dispatch(loadRoadmaps());
 	}, []);
 
-
-
 	const handleChange = (e) => {
-
 		setSlotTask(e.target.value || e.target.textContent);
 
 		// create a list of all tasks in roadmap
 		let roadmapTasksArr = [];
 		// console.log(roadmap);
-		roadmap.map(taskName => {
+		roadmap.map((taskName) => {
 			roadmapTasksArr.push(taskName.task.name);
 		});
 
@@ -46,10 +43,9 @@ const DayFocus = ({ day, week, roadmap }) => {
 		};
 
 		// check if roadmap task already exists
-		roadmapTasksArr.includes(e.target.value || e.target.textContent) ?
-		setNewRoadmapTask({}) :
-		setNewRoadmapTask(newTask);
-
+		roadmapTasksArr.includes(e.target.value || e.target.textContent)
+			? setNewRoadmapTask({})
+			: setNewRoadmapTask(newTask);
 	};
 
 	const handleOpenModal = () => {
@@ -62,96 +58,106 @@ const DayFocus = ({ day, week, roadmap }) => {
 
 	// console.log(week);
 	// console.log(day);
+
+	const [ toggleVis, setToggleVis ] = useState(true);
+
+	const handleContainerVisibility = () => {
+		setToggleVis(!toggleVis);
+	};
+
 	return (
 		<div className="day-focus">
-			<span>Today Focus</span>
-			<button className="button" onClick={handleOpenModal}>
-				{' '}
-				Add slot{' '}
-			</button>
+			<div className="section-title">
+				<span>Today Focus</span>
 
-			<Modal
-				isOpen={toggleModal}
-				onRequestClose={handleCloseModal}
-				ariaHideApp={false}
-				closeTimeoutMS={200}
-				className="addroadmap-modal"
-				style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
-			>
-				<form >
-					<Autocomplete
-						freeSolo
-						options={roadmap}
-						getOptionLabel={(option) => option.task.name}
-						onChange={handleChange}
-						renderInput={
-							(params) => <TextField onChange={handleChange} {...params} label="Task" />
-						}
-					/>
-				</form>
-
-				<button
-					className="button"
-					onClick={() => {
-						store.dispatch(handleAddSlot(week._id, day.day, slotTask));
-						handleCloseModal();
-
-						// if no new roadmap task, don't add a new one
-						(JSON.stringify(newRoadmapTask) === '{}') ? 
-						console.log(null) :
-						store.dispatch(handleAddTask(newRoadmapTask));
-
-					}}
-				>
+				<input 
+					name="visibility"
+					className="visibility-checkbox"
+					type="checkbox" 
+					onChange={handleContainerVisibility} checked={toggleVis} 
+				/>
+			</div>
+			<div className={`${toggleVis ? 'show' : 'hide'}`}>
+				<button className="button" onClick={handleOpenModal}>
 					{' '}
-					Add{' '}
+					Add slot{' '}
 				</button>
-			</Modal>
 
-			<table>
-				<Fragment>
-					<thead>
-						<tr>
-							{day.tasks.map((task) => (
-									<th key={uuid()}>Slot {task.slotNumber}</th>
-							))}
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							{day.tasks.map((task) => (
-								<td key={uuid()} className={task.taskName === '' ? 'incomplete' : 'green'}>
-									{task.taskName}
-								</td>
-							))}
-						</tr>
+				<Modal
+					isOpen={toggleModal}
+					onRequestClose={handleCloseModal}
+					ariaHideApp={false}
+					closeTimeoutMS={200}
+					className="addroadmap-modal"
+					style={{ overlay: { backgroundColor: 'rgba(0, 0, 0, 0)' } }}
+				>
+					<form>
+						<Autocomplete
+							freeSolo
+							options={roadmap}
+							getOptionLabel={(option) => option.task.name}
+							onChange={handleChange}
+							renderInput={(params) => <TextField onChange={handleChange} {...params} label="Task" />}
+						/>
+					</form>
 
-						<tr>
-							{day.tasks.map((task) => (
-								<td key={uuid()}>
-									<FontAwesomeIcon
-										onClick={() => store.dispatch(handleDeleteSlot(week._id, day, task))}
-										icon={faTrashAlt}
-										className="delete-slot"
-									/>
-								</td>
-							))}
-						</tr>
-					</tbody>
-				</Fragment>
-			</table>
+					<button
+						className="button"
+						onClick={() => {
+							store.dispatch(handleAddSlot(week._id, day.day, slotTask));
+							handleCloseModal();
+
+							// if no new roadmap task, don't add a new one
+							JSON.stringify(newRoadmapTask) === '{}'
+								? console.log(null)
+								: store.dispatch(handleAddTask(newRoadmapTask));
+						}}
+					>
+						{' '}
+						Add{' '}
+					</button>
+				</Modal>
+
+				<table>
+					<Fragment>
+						<thead>
+							<tr>{day.tasks.map((task) => <th key={uuid()}>Slot {task.slotNumber}</th>)}</tr>
+						</thead>
+						<tbody>
+							<tr>
+								{day.tasks.map((task) => (
+									<td key={uuid()} className={task.taskName === '' ? 'incomplete' : 'green'}>
+										{task.taskName}
+									</td>
+								))}
+							</tr>
+
+							<tr>
+								{day.tasks.map((task) => (
+									<td key={uuid()}>
+										<FontAwesomeIcon
+											onClick={() => store.dispatch(handleDeleteSlot(week._id, day, task))}
+											icon={faTrashAlt}
+											className="delete-slot"
+										/>
+									</td>
+								))}
+							</tr>
+						</tbody>
+					</Fragment>
+				</table>
+			</div>
 		</div>
 	);
 };
 
 DayFocus.propTypes = {
-	loadRoadmaps: PropTypes.func.isRequired,
+	loadRoadmaps: PropTypes.func.isRequired
 };
-
 
 const mapStateToProps = (state) => ({
 	day: state.weeks.currentDay,
 	week: state.weeks.currentWeek,
 	roadmap: state.roadmap.data
 });
-export default connect(mapStateToProps, {loadRoadmaps})(DayFocus);
+export default connect(mapStateToProps, { loadRoadmaps })(DayFocus);

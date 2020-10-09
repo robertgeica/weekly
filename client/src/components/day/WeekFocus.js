@@ -46,11 +46,25 @@ const WeekFocus = ({ data, day, roadmap, handleAddWeekFocus, handleDeleteWeekFoc
 		}
 			
 	}
+	const [ toggleVis, setToggleVis ] = useState(true);
 
+	const handleContainerVisibility = () => {
+		setToggleVis(!toggleVis);
+	};
 	return (
 		<div className="week-focus">
 			
-			<span>Week Focus</span>
+			<div className="section-title">
+				<span>Week Focus</span>
+
+				<input 
+					name="visibility"
+					className="visibility-checkbox"
+					type="checkbox" 
+					onChange={handleContainerVisibility} checked={toggleVis} 
+				/>
+			</div>
+			<div className={`${toggleVis ? 'show' : 'hide'}`}>
 			<Modal
 				isOpen={!!toggle}
 				onRequestClose={handleCloseModal}
@@ -112,6 +126,7 @@ const WeekFocus = ({ data, day, roadmap, handleAddWeekFocus, handleDeleteWeekFoc
 					))}
 				</tbody>
 			</table>
+		</div>
 		</div>
 	);
 };
