@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 import Modal from 'react-modal';
 import { uuid } from 'uuidv4';
@@ -6,9 +6,20 @@ import { uuid } from 'uuidv4';
 import { connect } from 'react-redux';
 import store from '../../store/store';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditIcon from '@material-ui/icons/Edit';
+
+import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
+import ChatIcon from '@material-ui/icons/Chat';
+import EventIcon from '@material-ui/icons/Event';
+
+import { withStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import RocketIcon from '../../assets/rocket.svg';
 
 import {
 	loadRoadmaps,
@@ -24,11 +35,42 @@ import {
 import AddRoadmapModal from './AddRoadmapModal';
 import UpdateTaskModal from './UpdateTaskModal';
 
-const Roadmap = ({ auth: { isAuthenticated, loading }, data, crtCategory, taskId }) => {
+import { makeStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+
+const Roadmap = ({ auth: { isAuthenticated, loading }, data, crtCategory, taskId, currentTask }) => {
 	useEffect(() => {
 		store.dispatch(loadRoadmaps());
 		// store.dispatch(updateRoadmaps());
 	}, []);
+	// options for delete/edit
+	const [ anchorEl, setAnchorEl ] = useState(null);
+	const open = Boolean(anchorEl);
+
+	const handleClick = (e) => {
+		setAnchorEl(e.currentTarget);
+		store.dispatch(setTaskId(e.target.parentNode.parentNode.parentNode.parentNode.id));
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	// drawer right
+	const classes = useStyles();
+	const [ open2, setOpen ] = React.useState(false);
+
+	const handleDrawerOpen = (e) => {
+		setOpen(true);
+		store.dispatch(setTaskId(e.target.parentNode.parentNode.id));
+	};
+
+	const handleDrawerClose = () => {
+		setOpen(false);
+	};
+	// end drawer
 
 	// get all categories
 	let categories = [];
@@ -40,9 +82,11 @@ const Roadmap = ({ auth: { isAuthenticated, loading }, data, crtCategory, taskId
 	categories = [ ...new Set(categories) ];
 
 	// redirect to /login if user is not authenticated
-	if(!loading && !isAuthenticated) {
-		return <Redirect to="/login" />	
+	if (!loading && !isAuthenticated) {
+		return <Redirect to="/login" />;
 	}
+
+	console.log(currentTask);
 
 	return (
 		<div className="roadmap">
@@ -71,49 +115,152 @@ const Roadmap = ({ auth: { isAuthenticated, loading }, data, crtCategory, taskId
 					<button className="button2" onClick={() => store.dispatch(handleOpenModal())}>
 						Add task
 					</button>
+					<button className="button2"> Add label </button>
 				</div>
 
 				<AddRoadmapModal />
 
-				{data.map((task) => {
-					if (task.categoryName == crtCategory) {
-						store.dispatch(setCurrentTask(task));
+				<div className={open2 == true ? 'tasks-container opened-drawer' : 'tasks-container'}>
+					{data.map((task) => {
+						if (task.categoryName == crtCategory) {
+							if (taskId == task._id) {
+								store.dispatch(setCurrentTask(task));
+							}
 
-						return (
-							<div key={task._id} className="task">
-								<div className="task-info">
-									<p>Task: {task.task.name}</p>
-
-									<div className="hours">
-										<p>AH: {task.task.allocatedHours}</p>
-										<p>CH: {task.task.completedHours}</p>
-
-										<UpdateTaskModal />
-									</div>
-								</div>
-
+							const editOptions = [
 								<div className="buttons">
 									<button
 										className="button"
-										onClick={() => store.dispatch(handleDeleteTask(task._id))}
+										onClick={() => {
+											store.dispatch(handleDeleteTask(taskId));
+											handleClose();
+										}}
 									>
-										<FontAwesomeIcon icon={faTrashAlt} />
+										<DeleteForeverIcon />
 									</button>
 
 									<button
 										className="button"
 										onClick={() => {
 											store.dispatch(handleOpenUpdateModal());
-											store.dispatch(setTaskId(task._id));
+											handleClose();
 										}}
 									>
-										<FontAwesomeIcon icon={faPen} />
+										<EditIcon />
 									</button>
 								</div>
-							</div>
-						);
-					}
-				})}
+							];
+
+							return (
+								<div key={task._id} className="task" id={task._id}>
+									<div className="task-img" onClick={handleDrawerOpen}>
+										<img src={RocketIcon} alt="Logo" />
+									</div>
+
+									<Drawer
+										className="drawer"
+										className={classes.drawer}
+										variant="persistent"
+										anchor="right"
+										open={open2}
+										classes={{
+											paper: classes.drawerPaper
+										}}
+									>
+										<div>
+											<p onClick={handleDrawerClose}>close</p>
+										</div>
+										<Divider />
+										{Object.keys(currentTask).length == 0 ? (
+											''
+										) : (
+											<div>
+												<p>{currentTask.task.name}</p>
+												<p>{currentTask.categoryName}</p>
+
+												<div className="stats">
+													<div className="icon">
+														<QueryBuilderIcon />
+														<span>20</span>
+													</div>
+													<div className="icon">
+														<ChatIcon />
+														<span>8</span>
+													</div>
+													<div className="due-icon">
+														<EventIcon />
+														<span>20 days</span>
+													</div>
+												</div>
+
+												<p>comments</p>
+												<Divider />
+
+												<p>activity</p>
+												<Divider />
+											</div>
+										)}
+									</Drawer>
+
+									<div className="icon-btn">
+										<IconButton
+											aria-label="more"
+											aria-controls="long-menu"
+											aria-haspopup="true"
+											onClick={handleClick}
+										>
+											<MoreVertIcon />
+										</IconButton>
+
+										<Menu
+											id="long-menu"
+											anchorEl={anchorEl}
+											keepMounted
+											open={open}
+											onClose={handleClose}
+											PaperProps={{
+												style: {
+													width: 'auto',
+													height: 'auto'
+												}
+											}}
+										>
+											{editOptions.map((option) => <MenuItem key={task._id}>{option}</MenuItem>)}
+										</Menu>
+									</div>
+
+									<div className="task-info">
+										<div className="infos">
+											<p>{task.task.name}</p>
+											<p>{task.categoryName}</p>
+										</div>
+										{Object.keys(currentTask).length == 0 ? '' : <UpdateTaskModal />}
+									</div>
+
+									<div className="progress-bar">
+										<p>80%</p>
+										<BorderLinearProgress variant="determinate" value={80} />
+									</div>
+
+									<div className="stats">
+										<div className="icon">
+											<QueryBuilderIcon />
+											<span>20</span>
+										</div>
+										<div className="icon">
+											<ChatIcon />
+											<span>8</span>
+										</div>
+										<div className="due-icon">
+											<EventIcon />
+											<span>20 days</span>
+										</div>
+									</div>
+								</div>
+							);
+						}
+					})}
+				</div>
 			</div>
 		</div>
 	);
@@ -123,7 +270,81 @@ const mapStateToProps = (state) => ({
 	data: state.roadmap.data,
 	crtCategory: state.roadmap.currentCategory,
 	taskId: state.roadmap.taskId,
-	auth: state.auth
+	auth: state.auth,
+	currentTask: state.roadmap.currentTask
 });
+
+const BorderLinearProgress = withStyles((theme) => ({
+	root: {
+		height: 10,
+		borderRadius: 5
+	},
+	colorPrimary: {
+		backgroundColor: theme.palette.grey[theme.palette.type === 'light' ? 200 : 700]
+	},
+	bar: {
+		borderRadius: 5,
+		backgroundColor: '#1a90ff'
+	}
+}))(LinearProgress);
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+		display: 'flex'
+	},
+	appBar: {
+		transition: theme.transitions.create([ 'margin', 'width' ], {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen
+		})
+	},
+	appBarShift: {
+		width: `calc(100% - ${drawerWidth}px)`,
+		transition: theme.transitions.create([ 'margin', 'width' ], {
+			easing: theme.transitions.easing.easeOut,
+			duration: theme.transitions.duration.enteringScreen
+		}),
+		marginRight: drawerWidth
+	},
+	title: {
+		flexGrow: 1
+	},
+	hide: {
+		display: 'none'
+	},
+	drawer: {
+		width: drawerWidth,
+		flexShrink: 0
+	},
+	drawerPaper: {
+		width: drawerWidth
+	},
+	drawerHeader: {
+		display: 'flex',
+		alignItems: 'center',
+		padding: theme.spacing(0, 1),
+		// necessary for content to be below app bar
+		...theme.mixins.toolbar,
+		justifyContent: 'flex-start'
+	},
+	content: {
+		flexGrow: 1,
+		padding: theme.spacing(3),
+		transition: theme.transitions.create('margin', {
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen
+		}),
+		marginRight: -drawerWidth
+	},
+	contentShift: {
+		transition: theme.transitions.create('margin', {
+			easing: theme.transitions.easing.easeOut,
+			duration: theme.transitions.duration.enteringScreen
+		}),
+		marginRight: 0
+	}
+}));
 
 export default connect(mapStateToProps)(Roadmap);

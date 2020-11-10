@@ -59,38 +59,124 @@
 			}
 		}
 
-		.task {
-			display: flex;
-			flex-direction: row;
-			width: 80%;
+		.tasks-container {
+			width: 90%;
 			margin: auto;
-			font-weight: 600;
+			display: flex;
 			justify-content: space-evenly;
-			// border: 1px solid red;
+			flex-wrap: wrap;
 
-			.buttons,
-			.task-info {
-				display: flex;
-				flex-direction: column;
-				margin: 2em 0;
+		}
+
+		.opened-drawer {
+			margin-left: 0;
+			width: 75%;
+		}
+
+		.task {
+			font-weight: 600;
+			margin: 2em .5em;
+			border-radius: 15px;
+			background-color: #414850;
+			width: 13em;
+			
+			// right drawer
+			.MuiPaper-root {
+				
 			}
 
-			.task-info {
-				p {
-					margin: 1em 0;
-				}
+			.task-img {
+				text-align: center;
+				background-color: #63A9DC;
+				width: 3.5em;
+				height: 3.5em;
+				margin: -5em auto .5em;
+				border-radius: 15px;
+				cursor: pointer;
+			}
 
-				.hours {
+			.progress-bar {
+				p {
+					display: flex;
+					justify-content: flex-end;
+					margin: 0;
+				}
+				width: 80%;
+				margin: 1em auto;
+			}
+
+			&::before {
+				content: " ";
+				display: inline-block;
+				border-top: 50px solid rgb(0, 119, 255);
+				border-right: 50px solid #414850;
+				border-radius: 15px 0px 0px 0px;
+			}
+			
+			.buttons, .task-info {
+				display: flex;
+				margin: .5em;
+			}
+
+			.stats {
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+
+				.icon, .due-icon {
 					display: flex;
 					flex-direction: row;
+					margin: 5px;
+				}
 
-					p:nth-child(2) {
-						margin-left: 1em;
-					}
+				.due-icon {
+					background-color: grey;
+					border-radius: 15px;
+					padding: 0 5px;
 				}
 			}
+
+		
+
+			.icon-btn {
+				display: flex;
+				align-self: flex-end;
+				justify-content: flex-end;
+				// margin-top: -3em;
+
+				.buttons {
+					display: flex;
+					flex-direction: row;
+					margin: auto;
+					padding: 0;
+				}
+
+			}
+
+			
+			.task-info {
+				flex-direction: column;
+			
+
+				p {
+					margin-top: 0;
+				}
+
+				.infos {
+					text-align: center;
+					margin-top: -2em;
+				}
+
+
+			}
 		}
+		
 	}
+	
+}
+// overwrite materialui
+.button {
+	margin: .5em !important;
 }
 
 // add roadmap modal
@@ -121,15 +207,16 @@
     
   }
   button {
-    border: none;
-    border-radius: 3px;
-    padding: .4em;
-    outline: none;
-    font-weight: 700;
-    color: #fff;
-    background-color: #414850;
-    cursor: pointer;
+    // border: none;
+    // border-radius: 3px;
+    // padding: .4em;
+    // outline: none;
+    // font-weight: 700;
+    // color: #fff;
+    // background-color: #414850;
+		cursor: pointer;
   }
 } 
+
 
 // update task modal

@@ -140,6 +140,8 @@ const DayFocus = ({ day, week, roadmap }) => {
 											icon={faTrashAlt}
 											className="delete-slot"
 										/>
+
+										<p> edit </p>
 									</td>
 								))}
 							</tr>
