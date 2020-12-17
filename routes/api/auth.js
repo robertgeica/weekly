@@ -7,7 +7,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey('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');
+sgMail.setApiKey('');
 
 const User = require('../../models/User');
 
